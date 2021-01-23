@@ -22,22 +22,19 @@ namespace video_tracker_v2
     /// </summary>
     public partial class VideosPage : Page
     {
-        LibVLC _libVLC;
-        MediaPlayer _mediaPlayer;
+        private LibVLC _libVLC;
+        private MediaPlayer _mediaPlayer;
+        private Window mainWindow;
+        private bool isFullscreen = false;
+
         public VideosPage()
         {
             InitializeComponent();
+            mainWindow = Application.Current.MainWindow;
             videoView.Loaded += VideoView_Loaded;
         }
         private void VideoView_Loaded(object sender, RoutedEventArgs e)
         {
-            ////Core.Initialize();
-            ////LibVLC vlc = new LibVLC();
-            ////Media media = new Media(vlc, "C:\\Users\\achue\\Downloads\\ninenine\\test.mkv");
-            ////MediaPlayer player = new MediaPlayer(vlc);
-            ////view.MediaPlayer = player;
-            ////player.Play();
-            ///
             Core.Initialize();
 
             _libVLC = new LibVLC();
@@ -48,9 +45,43 @@ namespace video_tracker_v2
 
         }
 
-        private void EnterFullscreenMode(object sender, MouseButtonEventArgs e)
-        {
 
+        private void PreviewLeftMouseButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2) // if double click
+            {
+                EnterFullscreenMode();
+            }
+        }
+
+        private void EnterFullscreenMode()
+        {
+            if (!isFullscreen)
+            {
+                mainWindow.WindowStyle = WindowStyle.None;
+                mainWindow.WindowState = WindowState.Maximized;
+                Grid.SetColumn(videoView, 0);
+                Grid.SetColumnSpan(videoView, 10);
+                Grid.SetRow(videoView, 0);
+                Grid.SetRowSpan(videoView, 10);
+                mainWindow.Focus();
+                Mouse.OverrideCursor = Cursors.None;
+
+                isFullscreen = true;
+            }
+            else
+            {
+                mainWindow.WindowStyle = WindowStyle.SingleBorderWindow;
+                mainWindow.WindowState = WindowState.Normal;
+                Grid.SetColumn(videoView, 2);
+                Grid.SetColumnSpan(videoView, 1);
+                Grid.SetRow(videoView, 0);
+                Grid.SetRowSpan(videoView, 2);
+                mainWindow.Focus();
+                Mouse.OverrideCursor = Cursors.Arrow;
+
+                isFullscreen = false;
+            }
         }
     }
 }

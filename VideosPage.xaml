@@ -12,7 +12,7 @@
       >
     
     
-    <Grid>
+    <Grid Name="mainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="18*"/>
             <ColumnDefinition Width="23*"/>
@@ -33,7 +33,7 @@
         <wpf:VideoView x:Name="videoView"
         Grid.Column="2"  HorizontalAlignment="Stretch" Width="auto" VerticalAlignment="Stretch" 
             MinWidth="480" Height="auto" MinHeight="320" Grid.RowSpan="2" IsHitTestVisible="False">
-            <Canvas VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Black" Opacity="0.005" PreviewMouseLeftButtonUp="EnterFullscreenMode">
+            <Canvas VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Black" Opacity="0.005" PreviewMouseLeftButtonDown="PreviewLeftMouseButtonDown">
             </Canvas>
         </wpf:VideoView>
     </Grid>
