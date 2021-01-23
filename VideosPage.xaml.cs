@@ -45,6 +45,16 @@ namespace video_tracker_v2
 
         }
 
+        private void ShowUI(object sender, MouseEventArgs e)
+        {
+            //UIWindow.Opacity = 100;
+            
+        }
+
+        private void HideUI(object sender, MouseEventArgs e)
+        {
+
+        }
 
         private void PreviewLeftMouseButtonDown(object sender, MouseButtonEventArgs e)
         {

@@ -33,8 +33,9 @@
         <wpf:VideoView x:Name="videoView"
         Grid.Column="2"  HorizontalAlignment="Stretch" Width="auto" VerticalAlignment="Stretch" 
             MinWidth="480" Height="auto" MinHeight="320" Grid.RowSpan="2" IsHitTestVisible="False">
-            <Canvas VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Black" Opacity="0.005" PreviewMouseLeftButtonDown="PreviewLeftMouseButtonDown">
-            </Canvas>
+            <Canvas Name="UIWindow" Background="Black" Opacity="0.005" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" PreviewMouseLeftButtonDown="PreviewLeftMouseButtonDown"
+                    MouseEnter="ShowUI" MouseLeave="HideUI">
+                </Canvas>
         </wpf:VideoView>
     </Grid>
 
