@@ -16,19 +16,19 @@ using System.Windows.Shapes;
 namespace video_tracker_v2
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for HomePage.xaml
     /// </summary>
-    public partial class MainWindow : NavigationWindow
+    public partial class HomePage : Page
     {
-
-        public MainWindow()
+        public HomePage()
         {
             InitializeComponent();
         }
 
-        private void Test(object sender, MouseButtonEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("xad");
+            VideosPage videosPage = new VideosPage();
+            this.NavigationService.Navigate(videosPage);
         }
     }
 }
