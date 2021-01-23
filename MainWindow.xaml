@@ -9,7 +9,6 @@
         ResizeMode="CanResize"
         Background="Gray"
         Source="HomePage.xaml"
-        MouseDown="Test"
         >
     <!-- WindowStyle="None"          AllowsTransparency="True"-->
 </NavigationWindow>

@@ -25,10 +25,5 @@ namespace video_tracker_v2
         {
             InitializeComponent();
         }
-
-        private void Test(object sender, MouseButtonEventArgs e)
-        {
-            Console.WriteLine("xad");
-        }
     }
 }
