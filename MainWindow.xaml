@@ -10,5 +10,4 @@
         Background="Gray"
         Source="HomePage.xaml"
         >
-    <!-- WindowStyle="None"          AllowsTransparency="True"-->
 </NavigationWindow>

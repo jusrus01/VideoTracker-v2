@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LibVLCSharp.Shared;
 using LibVLCSharp.WPF;
+using System.Timers;
 
 namespace video_tracker_v2
 {
@@ -26,13 +27,18 @@ namespace video_tracker_v2
         private MediaPlayer _mediaPlayer;
         private Window mainWindow;
         private bool isFullscreen = false;
+        private Timer timer;
 
         public VideosPage()
         {
             InitializeComponent();
             mainWindow = Application.Current.MainWindow;
             videoView.Loaded += VideoView_Loaded;
+
+            timer = new Timer(3000);
+            timer.Elapsed += HideCursor;
         }
+
         private void VideoView_Loaded(object sender, RoutedEventArgs e)
         {
             Core.Initialize();
@@ -45,15 +51,33 @@ namespace video_tracker_v2
 
         }
 
-        private void ShowUI(object sender, MouseEventArgs e)
+        private void HideCursor(object sender, ElapsedEventArgs e)
         {
-            //UIWindow.Opacity = 100;
-            
+            Application.Current.Dispatcher.Invoke((Action)delegate 
+            {
+                Mouse.OverrideCursor = Cursors.None;
+                HideUI();
+            });
         }
 
-        private void HideUI(object sender, MouseEventArgs e)
+        private void MouseMoveE(object sender, MouseEventArgs e)
         {
+            timer.Stop();
+            Mouse.OverrideCursor = Cursors.Arrow;
+            ShowUI(null, null);
+            timer.Start();
+        }
 
+        private void ShowUI(object sender, MouseEventArgs e)
+        {
+            UIControls.Opacity = 100;
+            sliderTimeline.Opacity = 100;
+        }
+
+        private void HideUI()
+        {
+            UIControls.Opacity = 0;
+            sliderTimeline.Opacity = 0;
         }
 
         private void PreviewLeftMouseButtonDown(object sender, MouseButtonEventArgs e)
@@ -75,7 +99,6 @@ namespace video_tracker_v2
                 Grid.SetRow(videoView, 0);
                 Grid.SetRowSpan(videoView, 10);
                 mainWindow.Focus();
-                Mouse.OverrideCursor = Cursors.None;
 
                 isFullscreen = true;
             }
@@ -88,7 +111,6 @@ namespace video_tracker_v2
                 Grid.SetRow(videoView, 0);
                 Grid.SetRowSpan(videoView, 2);
                 mainWindow.Focus();
-                Mouse.OverrideCursor = Cursors.Arrow;
 
                 isFullscreen = false;
             }

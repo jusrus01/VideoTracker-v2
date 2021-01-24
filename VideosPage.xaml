@@ -10,8 +10,7 @@
       Title="Video Tracker - Videos" Width="auto" Height="auto"
       MinWidth="640" MinHeight="480"
       >
-    
-    
+
     <Grid Name="mainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="18*"/>
@@ -33,9 +32,30 @@
         <wpf:VideoView x:Name="videoView"
         Grid.Column="2"  HorizontalAlignment="Stretch" Width="auto" VerticalAlignment="Stretch" 
             MinWidth="480" Height="auto" MinHeight="320" Grid.RowSpan="2" IsHitTestVisible="False">
-            <Canvas Name="UIWindow" Background="Black" Opacity="0.005" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" PreviewMouseLeftButtonDown="PreviewLeftMouseButtonDown"
-                    MouseEnter="ShowUI" MouseLeave="HideUI">
+            <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="369*" MinHeight="377"></RowDefinition>
+                    <RowDefinition Height="20*"/>
+                    <RowDefinition Height="30*"/>
+                </Grid.RowDefinitions>
+
+                <Canvas Name="UIWindow" Grid.Row="0" Grid.RowSpan="2" Background="Black" Opacity="0.005" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" PreviewMouseLeftButtonDown="PreviewLeftMouseButtonDown"
+                    MouseEnter="ShowUI" PreviewMouseMove="MouseMoveE">
                 </Canvas>
+
+                <WrapPanel Name="UIControls" HorizontalAlignment="Center" Grid.Row="2">
+                    <Button Background="Green" MaxWidth="40">LeftStep</Button>
+                    <Button Background="Green" MaxWidth="40">Play</Button>
+                    <Button Background="Green" MaxWidth="40">RightStep</Button>
+                    <Button Background="Green" MaxWidth="40">Pause</Button>
+
+                    <Slider Name="sliderVolume" Width="50" Margin="10,0,0,0"></Slider>
+                </WrapPanel>
+
+                <Slider Grid.Row="1" IsSnapToTickEnabled="True" Width="auto" Name="sliderTimeline"></Slider>
+
+            </Grid>
         </wpf:VideoView>
     </Grid>
 
