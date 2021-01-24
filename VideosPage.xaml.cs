@@ -60,6 +60,17 @@ namespace video_tracker_v2
             });
         }
 
+        private void StopInactiveCounter(object sender, MouseEventArgs e)
+        {
+            timer.Stop();
+            Mouse.OverrideCursor = Cursors.Arrow;
+        }
+
+        private void ShowSubtitlesContextMenu(object sender, MouseEventArgs e)
+        {
+            videoViewContextMenu.IsOpen = true;
+        }
+
         private void MouseMoveE(object sender, MouseEventArgs e)
         {
             timer.Stop();

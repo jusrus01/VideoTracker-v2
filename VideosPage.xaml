@@ -32,6 +32,13 @@
         <wpf:VideoView x:Name="videoView"
         Grid.Column="2"  HorizontalAlignment="Stretch" Width="auto" VerticalAlignment="Stretch" 
             MinWidth="480" Height="auto" MinHeight="320" Grid.RowSpan="2" IsHitTestVisible="False">
+            
+            <wpf:VideoView.ContextMenu>
+                <ContextMenu IsOpen="False" x:Name="videoViewContextMenu">
+                    <MenuItem Header="Add subtitle file"/>
+                </ContextMenu>
+            </wpf:VideoView.ContextMenu>
+            
             <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 
                 <Grid.RowDefinitions>
@@ -41,7 +48,7 @@
                 </Grid.RowDefinitions>
 
                 <Canvas Name="UIWindow" Grid.Row="0" Grid.RowSpan="2" Background="Black" Opacity="0.005" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" PreviewMouseLeftButtonDown="PreviewLeftMouseButtonDown"
-                    MouseEnter="ShowUI" PreviewMouseMove="MouseMoveE">
+                    MouseEnter="ShowUI" MouseLeave="StopInactiveCounter" PreviewMouseMove="MouseMoveE" PreviewMouseRightButtonUp="ShowSubtitlesContextMenu">
                 </Canvas>
 
                 <WrapPanel Name="UIControls" HorizontalAlignment="Center" Grid.Row="2">
