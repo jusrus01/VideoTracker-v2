@@ -9,5 +9,7 @@
         ResizeMode="CanResize"
         Background="Gray"
         Source="HomePage.xaml"
+        MinWidth="640" MinHeight="480"          
         >
+
 </NavigationWindow>

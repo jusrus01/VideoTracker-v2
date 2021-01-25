@@ -83,12 +83,14 @@ namespace video_tracker_v2
         {
             UIControls.Opacity = 100;
             sliderTimeline.Opacity = 100;
+            volumeControls.Opacity = 100;
         }
 
         private void HideUI()
         {
             UIControls.Opacity = 0;
             sliderTimeline.Opacity = 0;
+            volumeControls.Opacity = 0;
         }
 
         private void PreviewLeftMouseButtonDown(object sender, MouseButtonEventArgs e)
@@ -120,7 +122,7 @@ namespace video_tracker_v2
                 Grid.SetColumn(videoView, 2);
                 Grid.SetColumnSpan(videoView, 1);
                 Grid.SetRow(videoView, 0);
-                Grid.SetRowSpan(videoView, 2);
+                Grid.SetRowSpan(videoView, 3);
                 mainWindow.Focus();
 
                 isFullscreen = false;

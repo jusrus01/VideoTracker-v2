@@ -8,8 +8,60 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Video Tracker - Videos" Width="auto" Height="auto"
-      MinWidth="640" MinHeight="480"
       >
+
+    <Page.Resources>
+        <Style x:Key="PlayButtonStyle" TargetType="Button">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <ImageBrush ImageSource="C:\Users\achue\source\repos\video-tracker-v2\images\play-button.png"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="BorderThickness" Value="0"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <ImageBrush ImageSource="C:\Users\achue\source\repos\video-tracker-v2\images\play-button.png"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="LeftArrowButtonStyle" TargetType="Button">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <ImageBrush ImageSource="C:\Users\achue\source\repos\video-tracker-v2\images\double-left.png"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Width" Value="25"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        <Style x:Key="RightArrowButtonStyle" TargetType="Button">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <ImageBrush ImageSource="C:\Users\achue\source\repos\video-tracker-v2\images\double-right.png"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Width" Value="25"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        <Style x:Key="SpeakerButtonStyle" TargetType="Button">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <ImageBrush ImageSource="C:\Users\achue\source\repos\video-tracker-v2\images\speaker.png"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+    </Page.Resources>
 
     <Grid Name="mainGrid">
         <Grid.ColumnDefinitions>
@@ -31,15 +83,20 @@
 
         <wpf:VideoView x:Name="videoView"
         Grid.Column="2"  HorizontalAlignment="Stretch" Width="auto" VerticalAlignment="Stretch" 
-            MinWidth="480" Height="auto" MinHeight="320" Grid.RowSpan="2" IsHitTestVisible="False">
-            
+            MinWidth="480" Height="auto" MinHeight="320" Grid.RowSpan="3" IsHitTestVisible="False">
+
             <wpf:VideoView.ContextMenu>
                 <ContextMenu IsOpen="False" x:Name="videoViewContextMenu">
                     <MenuItem Header="Add subtitle file"/>
                 </ContextMenu>
             </wpf:VideoView.ContextMenu>
-            
+
             <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" MinWidth="520"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="369*" MinHeight="377"></RowDefinition>
@@ -47,20 +104,24 @@
                     <RowDefinition Height="30*"/>
                 </Grid.RowDefinitions>
 
-                <Canvas Name="UIWindow" Grid.Row="0" Grid.RowSpan="2" Background="Black" Opacity="0.005" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" PreviewMouseLeftButtonDown="PreviewLeftMouseButtonDown"
+                <Canvas Name="UIWindow" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="2" Background="Black" Opacity="0.005" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" PreviewMouseLeftButtonDown="PreviewLeftMouseButtonDown"
                     MouseEnter="ShowUI" MouseLeave="StopInactiveCounter" PreviewMouseMove="MouseMoveE" PreviewMouseRightButtonUp="ShowSubtitlesContextMenu">
                 </Canvas>
 
-                <WrapPanel Name="UIControls" HorizontalAlignment="Center" Grid.Row="2">
-                    <Button Background="Green" MaxWidth="40">LeftStep</Button>
-                    <Button Background="Green" MaxWidth="40">Play</Button>
-                    <Button Background="Green" MaxWidth="40">RightStep</Button>
-                    <Button Background="Green" MaxWidth="40">Pause</Button>
-
-                    <Slider Name="sliderVolume" Width="50" Margin="10,0,0,0"></Slider>
+                <WrapPanel Name="UIControls" VerticalAlignment="Stretch" HorizontalAlignment="Center"
+                           Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Width="200">
+                    <Button Style="{StaticResource LeftArrowButtonStyle}" Margin="0,0,10,0" MaxWidth="40"/>
+                    <Button Style="{StaticResource  PlayButtonStyle}" MaxWidth="40"/>
+                    <Button Style="{StaticResource RightArrowButtonStyle}" Margin="10,0,0,0" MaxWidth="40"/>
+                </WrapPanel>
+                
+                <WrapPanel Name="volumeControls"  Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,10,0">
+                    <Button Style="{StaticResource SpeakerButtonStyle}" MaxWidth="40"/>
+                    <Slider Name="sliderVolume" Width="100" Margin="20,0,0,0" Height="18"/>
                 </WrapPanel>
 
-                <Slider Grid.Row="1" IsSnapToTickEnabled="True" Width="auto" Name="sliderTimeline"></Slider>
+                <Slider Grid.ColumnSpan="2" Grid.Row="1" IsSnapToTickEnabled="True" Width="auto" Name="sliderTimeline"
+                        Maximum="3000" TickFrequency="1" IsMoveToPointEnabled="True"></Slider>
 
             </Grid>
         </wpf:VideoView>
