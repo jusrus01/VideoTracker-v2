@@ -79,6 +79,7 @@
     <Compile Include="HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VideoPlayer.cs" />
     <Compile Include="VideosPage.xaml.cs">
       <DependentUpon>VideosPage.xaml</DependentUpon>
     </Compile>

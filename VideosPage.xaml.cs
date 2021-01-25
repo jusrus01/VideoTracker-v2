@@ -23,11 +23,12 @@ namespace video_tracker_v2
     /// </summary>
     public partial class VideosPage : Page
     {
-        private LibVLC _libVLC;
-        private MediaPlayer _mediaPlayer;
         private Window mainWindow;
         private bool isFullscreen = false;
+
         private Timer timer;
+
+        private VideoPlayer player;
 
         public VideosPage()
         {
@@ -39,16 +40,26 @@ namespace video_tracker_v2
             timer.Elapsed += HideCursor;
         }
 
+        // test
         private void VideoView_Loaded(object sender, RoutedEventArgs e)
         {
-            Core.Initialize();
+            player = new VideoPlayer();
 
-            _libVLC = new LibVLC();
-            _mediaPlayer = new MediaPlayer(_libVLC);
-            _mediaPlayer.EnableMouseInput = false;
-            videoView.MediaPlayer = _mediaPlayer;
-            _mediaPlayer.Play(new Media(_libVLC, new Uri("C:\\Users\\achue\\Downloads\\ninenine\\test.mkv")));
+            videoView.MediaPlayer = player.mPlayer;
 
+            player.mPlayer.TimeChanged += UpdateTimeSlider;
+            player.PlayDemo();
+        }
+
+        private void UpdateTimeSlider(object sender, MediaPlayerTimeChangedEventArgs e)
+        {
+            sliderTimeline.Dispatcher.Invoke(() =>
+            {
+                if(sliderTimeline.Maximum != Convert.ToDouble(player.currentMedia.Duration / 60))
+                    sliderTimeline.Maximum = Convert.ToDouble(player.currentMedia.Duration / 60);
+
+                sliderTimeline.Value = Convert.ToDouble(e.Time / 60);
+            });
         }
 
         private void HideCursor(object sender, ElapsedEventArgs e)
@@ -126,6 +137,18 @@ namespace video_tracker_v2
                 mainWindow.Focus();
 
                 isFullscreen = false;
+            }
+        }
+
+        private void PlayVideo(object sender, RoutedEventArgs e)
+        {
+            if(player.mPlayer.IsPlaying)
+            {
+                player.Pause();
+            }
+            else
+            {
+                player.Play();
             }
         }
     }
