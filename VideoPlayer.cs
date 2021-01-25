@@ -42,5 +42,10 @@ namespace video_tracker_v2
         {
             mPlayer.Play(currentMedia);
         }
+
+        public void SetTime(double time)
+        {
+            mPlayer.Time = (long)time * 60;
+        }
     }
 }

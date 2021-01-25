@@ -20,6 +20,7 @@
             <Setter Property="Width" Value="30"/>
             <Setter Property="Height" Value="30"/>
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Opacity" Value="0.6"/>
 
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
@@ -40,6 +41,8 @@
             <Setter Property="Width" Value="25"/>
             <Setter Property="Height" Value="20"/>
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Opacity" Value="0.6"/>
+            
         </Style>
         <Style x:Key="RightArrowButtonStyle" TargetType="Button">
             <Setter Property="Background">
@@ -50,6 +53,7 @@
             <Setter Property="Width" Value="25"/>
             <Setter Property="Height" Value="20"/>
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Opacity" Value="0.6"/>
         </Style>
         <Style x:Key="SpeakerButtonStyle" TargetType="Button">
             <Setter Property="Background">
@@ -60,6 +64,7 @@
             <Setter Property="Width" Value="30"/>
             <Setter Property="Height" Value="30"/>
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Opacity" Value="0.6"/>
         </Style>
 
         <Style x:Key="SliderRepeatButton" TargetType="RepeatButton">
@@ -104,7 +109,8 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}" />
+                    <RowDefinition Height="Auto" MinHeight="20"/>
+                    <!--"{TemplateBinding MinHeight}" />-->
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Track Grid.Row="1" x:Name="PART_Track"   >
@@ -181,6 +187,8 @@
                     MouseEnter="ShowUI" MouseLeave="StopInactiveCounter" PreviewMouseMove="MouseMoveE" PreviewMouseRightButtonUp="ShowSubtitlesContextMenu">
                 </Canvas>
 
+                <Rectangle Name="rect" Grid.Row="1" Grid.RowSpan="3" Grid.ColumnSpan="3" Fill="Black" Opacity="0.2"/>
+
                 <WrapPanel Name="UIControls" VerticalAlignment="Stretch" HorizontalAlignment="Center"
                            Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2">
                     <Button Style="{StaticResource LeftArrowButtonStyle}" Margin="0,0,10,0"/>
@@ -194,7 +202,7 @@
                 </WrapPanel>
 
                 <Slider Style="{StaticResource Horizontal_Slider}" Grid.ColumnSpan="2" Grid.Row="1" IsSnapToTickEnabled="True" Width="auto" Name="sliderTimeline"
-                        Maximum="3000" TickFrequency="1" IsMoveToPointEnabled="True"></Slider>
+                        ValueChanged="SetVideoToTime" Maximum="3000" TickFrequency="1" IsMoveToPointEnabled="True"></Slider>
 
             </Grid>
         </wpf:VideoView>

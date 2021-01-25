@@ -95,6 +95,7 @@ namespace video_tracker_v2
             UIControls.Opacity = 100;
             sliderTimeline.Opacity = 100;
             volumeControls.Opacity = 100;
+            rect.Opacity = 0.2;
         }
 
         private void HideUI()
@@ -102,6 +103,7 @@ namespace video_tracker_v2
             UIControls.Opacity = 0;
             sliderTimeline.Opacity = 0;
             volumeControls.Opacity = 0;
+            rect.Opacity = 0;
         }
 
         private void PreviewLeftMouseButtonDown(object sender, MouseButtonEventArgs e)
@@ -149,6 +151,16 @@ namespace video_tracker_v2
             else
             {
                 player.Play();
+            }
+        }
+
+        private void SetVideoToTime(object sender, RoutedEventArgs e)
+        {
+            // check if it's really a mouse click
+            Slider s = sender as Slider;
+            if (Convert.ToDouble(player.mPlayer.Time / 60) != s.Value)
+            {
+                player.SetTime(s.Value);
             }
         }
     }
