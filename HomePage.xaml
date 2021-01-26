@@ -25,24 +25,13 @@
 
         <ScrollViewer Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" VerticalScrollBarVisibility="Visible">
             <Grid Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1" HorizontalAlignment="Center">
-                <WrapPanel Orientation="Horizontal">
+                <WrapPanel Name="panelCategories" Orientation="Horizontal">
                     <Button Click="Button_Click" Width="254" Height="146" />
-                    <Button Width="254" Height="146" />
-                    <Button Width="254" Height="146" />
-                    <Button Width="254" Height="146" />
-                    <Button Width="254" Height="146" />
-                    <Button Width="254" Height="146" />
-                    <Button Width="254" Height="146" />
-                    <Button Width="254" Height="146" />
-                    <Button Width="254" Height="146" />
-                    <Button Width="254" Height="146" />
-                    <Button Width="254" Height="146" />
-                    <Button Width="254" Height="146" />
                 </WrapPanel>
             </Grid>
         </ScrollViewer>
 
-        <Button Grid.Row="0" Grid.Column="0" Background="#231F20" Foreground="White">+</Button>
+        <Button Click="AddCategory" Grid.Row="0" Grid.Column="0" Background="#231F20" Foreground="White">+</Button>
         <Button Grid.Row="0" Grid.Column="1" Background="#231F20" Foreground="White">-</Button>
         
     </Grid>
