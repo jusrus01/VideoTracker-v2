@@ -189,7 +189,7 @@
 
                 <Rectangle Name="rect" Grid.Row="1" Grid.RowSpan="3" Grid.ColumnSpan="3" Fill="Black" Opacity="0.2"/>
 
-                <WrapPanel Name="UIControls" VerticalAlignment="Stretch" HorizontalAlignment="Center"
+                <WrapPanel Name="UIControls" HorizontalAlignment="Center"
                            Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2">
                     <Button Style="{StaticResource LeftArrowButtonStyle}" Margin="0,0,10,0"/>
                     <Button Name="btnPlay" Click="PlayVideo" Style="{StaticResource  PlayButtonStyle}" Width="auto" MinWidth="40" MinHeight="40"/>

@@ -23,6 +23,8 @@ namespace video_tracker_v2
     /// </summary>
     public partial class VideosPage : Page
     {
+        private string path;
+
         private Window mainWindow;
         private bool isFullscreen = false;
 
@@ -38,6 +40,11 @@ namespace video_tracker_v2
 
             timer = new Timer(3000);
             timer.Elapsed += HideCursor;
+        }
+
+        public VideosPage(string path) : base()
+        {
+            this.path = path;
         }
 
         // test
@@ -59,7 +66,7 @@ namespace video_tracker_v2
                 {
                     sliderTimeline.Maximum = Convert.ToDouble(player.currentMedia.Duration / 60);
                     // making sure volume slider is on some kind of value
-                    sliderVolume.Value = 50; // will be a loaded value...
+                    sliderVolume.Value = 50; // default
                 }
 
                 sliderTimeline.Value = Convert.ToDouble(e.Time / 60);
