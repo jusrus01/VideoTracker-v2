@@ -59,6 +59,13 @@ namespace video_tracker_v2
             player.PlayDemo();
         }
 
+        private void GoToHomePage(object sender, RoutedEventArgs e)
+        {
+            this.Content = null;
+            player.Dispose();
+            this.NavigationService.GoBack();
+        }
+
         private void UpdateTimeSlider(object sender, MediaPlayerTimeChangedEventArgs e)
         {
             sliderTimeline.Dispatcher.Invoke(() =>

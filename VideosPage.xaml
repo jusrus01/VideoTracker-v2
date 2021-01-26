@@ -8,6 +8,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Video Tracker - Videos" Width="auto" Height="auto"
+      KeepAlive="False"
       >
 
     <Page.Resources>
@@ -155,10 +156,7 @@
             <RowDefinition Height="8*"/>
         </Grid.RowDefinitions>
 
-        <!--<wpf:VideoView
-            Grid.Column="2"
-            HorizontalAlignment="Stretch" Width="auto" VerticalAlignment="Stretch" Background="Black" 
-            MinWidth="480" Height="auto" MinHeight="320" x:Name="videoView" Grid.RowSpan="2"/>-->
+        <Button Grid.Column="0" Grid.Row="0" Click="GoToHomePage">Go back</Button>
 
         <wpf:VideoView x:Name="videoView"
         Grid.Column="2"  HorizontalAlignment="Stretch" Width="auto" VerticalAlignment="Stretch" 
