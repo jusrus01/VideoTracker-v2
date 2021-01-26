@@ -55,11 +55,21 @@ namespace video_tracker_v2
         {
             sliderTimeline.Dispatcher.Invoke(() =>
             {
-                if(sliderTimeline.Maximum != Convert.ToDouble(player.currentMedia.Duration / 60))
+                if (sliderTimeline.Maximum != Convert.ToDouble(player.currentMedia.Duration / 60))
+                {
                     sliderTimeline.Maximum = Convert.ToDouble(player.currentMedia.Duration / 60);
+                    // making sure volume slider is on some kind of value
+                    sliderVolume.Value = 50; // will be a loaded value...
+                }
 
                 sliderTimeline.Value = Convert.ToDouble(e.Time / 60);
             });
+        }
+
+        private void UpdateVideoVolume(object sender, RoutedEventArgs e)
+        {
+            // apply new audio value
+            player.SetVolume(Convert.ToInt32((sender as Slider).Value));
         }
 
         private void HideCursor(object sender, ElapsedEventArgs e)

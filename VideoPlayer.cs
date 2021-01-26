@@ -22,9 +22,7 @@ namespace video_tracker_v2
 
             _libVLC = new LibVLC();
             currentMedia = new Media(_libVLC, new Uri("C:\\Users\\achue\\Downloads\\ninenine\\test.mkv"));
-
             mPlayer = new MediaPlayer(_libVLC);
-
             mPlayer.EnableMouseInput = false;
         }
 
@@ -46,6 +44,11 @@ namespace video_tracker_v2
         public void SetTime(double time)
         {
             mPlayer.Time = (long)time * 60;
+        }
+
+        public void SetVolume(int vol)
+        {
+            mPlayer.Volume = vol;
         }
     }
 }

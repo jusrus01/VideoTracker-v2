@@ -26,7 +26,7 @@
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background">
                         <Setter.Value>
-                            <ImageBrush ImageSource="C:\Users\achue\source\repos\video-tracker-v2\images\play-button.png"/>
+                            <ImageBrush x:Name="btnPlayImage" ImageSource="C:\Users\achue\source\repos\video-tracker-v2\images\play-button.png"/>
                         </Setter.Value>
                     </Setter>
                 </Trigger>
@@ -192,13 +192,16 @@
                 <WrapPanel Name="UIControls" VerticalAlignment="Stretch" HorizontalAlignment="Center"
                            Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2">
                     <Button Style="{StaticResource LeftArrowButtonStyle}" Margin="0,0,10,0"/>
-                    <Button Click="PlayVideo" Style="{StaticResource  PlayButtonStyle}" Width="auto" MinWidth="40" MinHeight="40"/>
+                    <Button Name="btnPlay" Click="PlayVideo" Style="{StaticResource  PlayButtonStyle}" Width="auto" MinWidth="40" MinHeight="40"/>
                     <Button Style="{StaticResource RightArrowButtonStyle}" Margin="10,0,0,0"/>
                 </WrapPanel>
-                
+
+                <!--https://stackoverflow.com/questions/18845109/change-background-toggle-button-->
+
                 <WrapPanel Name="volumeControls"  Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,10,0">
                     <Button Style="{StaticResource SpeakerButtonStyle}"/>
-                    <Slider Style="{StaticResource Horizontal_Slider}" Name="sliderVolume" Width="100" Margin="20,0,0,0" Height="18"/>
+                    <Slider Style="{StaticResource Horizontal_Slider}" Name="sliderVolume" Width="100" Margin="20,0,0,0" Height="18"
+                            Maximum="100" IsSnapToTickEnabled="True" IsMoveToPointEnabled="True" TickFrequency="1" ValueChanged="UpdateVideoVolume"/>
                 </WrapPanel>
 
                 <Slider Style="{StaticResource Horizontal_Slider}" Grid.ColumnSpan="2" Grid.Row="1" IsSnapToTickEnabled="True" Width="auto" Name="sliderTimeline"
