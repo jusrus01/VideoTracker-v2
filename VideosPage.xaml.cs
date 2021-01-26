@@ -34,7 +34,14 @@ namespace video_tracker_v2
 
         public VideosPage()
         {
+
+        }
+
+        public VideosPage(string path)
+        {
             InitializeComponent();
+
+            this.path = path;
             mainWindow = Application.Current.MainWindow;
             videoView.Loaded += VideoView_Loaded;
 
@@ -42,12 +49,6 @@ namespace video_tracker_v2
             timer.Elapsed += HideCursor;
         }
 
-        public VideosPage(string path) : base()
-        {
-            this.path = path;
-        }
-
-        // test
         private void VideoView_Loaded(object sender, RoutedEventArgs e)
         {
             player = new VideoPlayer();

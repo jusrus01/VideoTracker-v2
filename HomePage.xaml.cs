@@ -25,8 +25,10 @@ namespace video_tracker_v2
         {
             InitializeComponent();
 
-            DataManager.Path = @"..\..\categories.data";
+            DataManager.MainPath = @"..\..\categories.data";
+            DataManager.CreateDataFolder();
 
+            CreateCategories();
         }
 
         private void CreateCategories()
@@ -37,29 +39,21 @@ namespace video_tracker_v2
 
             foreach(string path in categories)
             {
-                // create button
                 CreateButton(path);
             }
         }
 
-        // create from application and save data
-        private void CreateButton(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        // create from data file 
         private void CreateButton(string path)
         {
             Button btn = new Button();
-            btn.Content = "TESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTEST";
-            btn.Name = path;
+            btn.Click += Button_Click;
+            btn.Content = System.IO.Path.GetFileName(path);
             panelCategories.Children.Add(btn);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            VideosPage videosPage = new VideosPage((sender as Button).Name);
+            VideosPage videosPage = new VideosPage(((sender as Button).Content as string));
             this.NavigationService.Navigate(videosPage);
         }
 
@@ -70,7 +64,12 @@ namespace video_tracker_v2
 
             if (openDialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                CreateButton(null);
+                // check to see if it already exists
+                if (!DataManager.EntryExists(openDialog.FileName))
+                {
+                    CreateButton(openDialog.FileName);
+                    DataManager.SaveCategory(openDialog.FileName);
+                }
             }
         }
     }
