@@ -23,7 +23,7 @@ namespace video_tracker_v2
     /// </summary>
     public partial class VideosPage : Page
     {
-        private string path;
+        private string categoryName;
 
         private Window mainWindow;
         private bool isFullscreen = false;
@@ -31,22 +31,42 @@ namespace video_tracker_v2
         private Timer timer;
 
         private VideoPlayer player;
+        private List<Video> videos;
 
         public VideosPage()
         {
 
         }
 
-        public VideosPage(string path)
+        public VideosPage(string categoryName)
         {
             InitializeComponent();
 
-            this.path = path;
+            this.categoryName = categoryName;
+
+            videos = DataManager.LoadVideos(categoryName);
+            CreateVideoListings();
+
             mainWindow = Application.Current.MainWindow;
             videoView.Loaded += VideoView_Loaded;
 
             timer = new Timer(3000);
             timer.Elapsed += HideCursor;
+        }
+
+        private void CreateVideoListings()
+        {
+            foreach(Video v in videos)
+            {
+                CreateButton(v);
+            }
+        }
+
+        private void CreateButton(Video v)
+        {
+            Button btn = new Button();
+            btn.Content = System.IO.Path.GetFileName(v.Path);
+            videoPanel.Children.Add(btn);
         }
 
         private void VideoView_Loaded(object sender, RoutedEventArgs e)
