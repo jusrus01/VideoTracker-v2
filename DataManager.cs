@@ -8,6 +8,7 @@ using System.IO;
 
 namespace video_tracker_v2
 {
+    // clear bad input (?)
     public static class DataManager
     {
         public static string MainPath { get; set; }
@@ -33,6 +34,52 @@ namespace video_tracker_v2
                 return validCategories.ToArray<string>();
             }
             return null;
+        }
+
+        // TO DO: add files check
+        public static List<Video> LoadVideos(string categoryName)
+        {
+            // if file doesn't exists
+            // create file
+            // and return all videos with data
+            List<Video> videos = new List<Video>();
+
+            if(File.Exists(DataPath + '\\' + categoryName))
+            {
+                string path = DataPath + '\\' + categoryName;
+                string[] lines = File.ReadAllLines(path);
+
+                foreach(string line in lines)
+                {
+                    string[] values = line.Split(';');
+                    videos.Add(new Video(values[0]));
+                }
+            }
+            else
+            {
+                StringBuilder videoData = new StringBuilder();
+
+                string path = string.Empty;
+                string[] categories = LoadCategories();
+                foreach (string category in categories)
+                {
+                    if (Path.GetFileName(category) == categoryName)
+                    {
+                        path = category;
+                        break;
+                    }
+                }
+
+                DirectoryInfo dicInfo = new DirectoryInfo(path);
+                foreach(FileInfo fi in dicInfo.GetFiles())
+                {
+                    videoData.AppendLine(string.Format("{0};{1};{2};{3};{4}",
+                        fi.FullName, "0", "0", "False", "False"));
+                    videos.Add(new Video(fi.FullName));
+                }
+                File.WriteAllText(DataPath + '\\' + categoryName, videoData.ToString());
+            }
+            return videos;
         }
 
         public static void SaveCategory(string categoryPath)
