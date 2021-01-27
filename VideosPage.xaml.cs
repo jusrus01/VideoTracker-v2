@@ -24,6 +24,7 @@ namespace video_tracker_v2
     public partial class VideosPage : Page
     {
         private string categoryName;
+        private string path;
 
         private Window mainWindow;
         private bool isFullscreen = false;
@@ -38,14 +39,14 @@ namespace video_tracker_v2
 
         }
 
-        public VideosPage(string categoryName)
+        public VideosPage(string path)
         {
             InitializeComponent();
 
-            this.categoryName = categoryName;
+            this.path = path;
+            this.categoryName = System.IO.Path.GetFileName(path);
 
-            videos = DataManager.LoadVideos(categoryName);
-            CreateVideoListings();
+            videos = DataManager.LoadVideos(this.categoryName);
 
             mainWindow = Application.Current.MainWindow;
             videoView.Loaded += VideoView_Loaded;
@@ -66,7 +67,14 @@ namespace video_tracker_v2
         {
             Button btn = new Button();
             btn.Content = System.IO.Path.GetFileName(v.Path);
+            btn.Click += LoadNewVideo;
             videoPanel.Children.Add(btn);
+        }
+
+        private void LoadNewVideo(object sender, RoutedEventArgs e)
+        {
+            player.Play(path,
+                (sender as Button).Content.ToString());
         }
 
         private void VideoView_Loaded(object sender, RoutedEventArgs e)
@@ -76,7 +84,10 @@ namespace video_tracker_v2
             videoView.MediaPlayer = player.mPlayer;
 
             player.mPlayer.TimeChanged += UpdateTimeSlider;
-            player.PlayDemo();
+
+            // making sure user can't
+            // start playing video until video view is loaded
+            CreateVideoListings();
         }
 
         private void GoToHomePage(object sender, RoutedEventArgs e)

@@ -21,6 +21,8 @@ namespace video_tracker_v2
     /// </summary>
     public partial class HomePage : Page
     {
+        private string[] categories;
+
         public HomePage()
         {
             InitializeComponent();
@@ -33,7 +35,7 @@ namespace video_tracker_v2
 
         private void CreateCategories()
         {
-            string[] categories = DataManager.LoadCategories();
+            categories = DataManager.LoadCategories();
             if (categories == null)
                 return;
 
@@ -47,13 +49,14 @@ namespace video_tracker_v2
         {
             Button btn = new Button();
             btn.Click += Button_Click;
+            btn.DataContext = path;
             btn.Content = System.IO.Path.GetFileName(path);
             panelCategories.Children.Add(btn);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            VideosPage videosPage = new VideosPage(((sender as Button).Content as string));
+            VideosPage videosPage = new VideosPage((sender as Button).DataContext as string);
             this.NavigationService.Navigate(videosPage);
         }
 

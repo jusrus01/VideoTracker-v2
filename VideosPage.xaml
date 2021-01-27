@@ -162,7 +162,7 @@
 
         <Button Grid.Column="0" Grid.Row="0" Click="GoToHomePage">Go back</Button>
 
-        <wpf:VideoView x:Name="videoView"
+        <wpf:VideoView x:Name="videoView" Background="Black"
         Grid.Column="2"  HorizontalAlignment="Stretch" Width="auto" VerticalAlignment="Stretch" 
             MinWidth="480" Height="auto" MinHeight="320" Grid.RowSpan="3" IsHitTestVisible="False">
 

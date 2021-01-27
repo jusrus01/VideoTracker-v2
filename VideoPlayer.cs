@@ -21,7 +21,7 @@ namespace video_tracker_v2
             Core.Initialize();
 
             _libVLC = new LibVLC();
-            currentMedia = new Media(_libVLC, new Uri("C:\\Users\\achue\\Downloads\\ninenine\\test.mkv"));
+            //currentMedia = new Media(_libVLC, new Uri("C:\\Users\\achue\\Downloads\\ninenine\\test.mkv"));
             mPlayer = new MediaPlayer(_libVLC);
 
             mPlayer.EnableMouseInput = false;
@@ -32,14 +32,17 @@ namespace video_tracker_v2
             mPlayer.Pause();
         }
 
+        public void Play(string path, string videoName)
+        {
+            currentMedia = new Media(_libVLC, new Uri(path + '\\' + videoName));
+            mPlayer.Media = currentMedia;
+
+            Play();
+        }
+
         public void Play()
         {
             mPlayer.Play();
-        }
-
-        public void PlayDemo()
-        {
-            mPlayer.Play(currentMedia);
         }
 
         public void SetTime(double time)
