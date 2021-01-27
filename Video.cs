@@ -9,10 +9,22 @@ namespace video_tracker_v2
     public class Video
     {
         public string Path { get; set; }
+        public uint CurrentTime { get; set; }
+        public uint Duration { get; set; }
+        public bool Complete { get; set; }
 
-        public Video(string path)
+        public Video(string path, uint curTime, uint duration, bool complete)
         {
-            this.Path = path;
+            Path = path;
+            CurrentTime = curTime;
+            Duration = duration;
+            Complete = complete;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0};{1};{2};{3}",
+                Path, CurrentTime, Duration, Complete);
         }
     }
 }

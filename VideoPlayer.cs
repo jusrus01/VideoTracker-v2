@@ -12,6 +12,7 @@ namespace video_tracker_v2
     class VideoPlayer
     {
         public MediaPlayer mPlayer { get; set; }
+        public Video currentVideo;
         public Media currentMedia;
 
         private LibVLC _libVLC;
@@ -32,9 +33,12 @@ namespace video_tracker_v2
             mPlayer.Pause();
         }
 
-        public void Play(string path, string videoName)
+        public void Play(Video video)
         {
-            currentMedia = new Media(_libVLC, new Uri(path + '\\' + videoName));
+            currentVideo = video;
+
+            currentMedia = new Media(_libVLC, new Uri(video.Path));
+
             mPlayer.Media = currentMedia;
 
             Play();
@@ -48,6 +52,7 @@ namespace video_tracker_v2
         public void SetTime(double time)
         {
             mPlayer.Time = (long)time * 60;
+            currentVideo.CurrentTime = Convert.ToUInt32(time);
         }
 
         public void SetVolume(int vol)
@@ -59,6 +64,11 @@ namespace video_tracker_v2
         {
             _libVLC.Dispose();
             mPlayer.Dispose();
+        }
+
+        public Video GetVideo()
+        {
+            return currentVideo;
         }
     }
 }

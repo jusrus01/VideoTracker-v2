@@ -49,6 +49,8 @@ namespace video_tracker_v2
             videos = DataManager.LoadVideos(this.categoryName);
 
             mainWindow = Application.Current.MainWindow;
+            Application.Current.Exit += SaveVideoData;
+
             videoView.Loaded += VideoView_Loaded;
 
             timer = new Timer(3000);
@@ -57,24 +59,38 @@ namespace video_tracker_v2
 
         private void CreateVideoListings()
         {
+            int count = 0;
             foreach(Video v in videos)
             {
-                CreateButton(v);
+                CreateButton(v, count);
+                count++;
             }
         }
 
-        private void CreateButton(Video v)
+        private void CreateButton(Video v, int id)
         {
             Button btn = new Button();
             btn.Content = System.IO.Path.GetFileName(v.Path);
             btn.Click += LoadNewVideo;
+            btn.DataContext = id.ToString();
             videoPanel.Children.Add(btn);
+        }
+
+        private void SaveVideoData(object sender, ExitEventArgs e)
+        {
+            if (player.currentVideo != null)
+            {
+                DataManager.UpdateVideoData(categoryName, player.currentVideo);
+            }
         }
 
         private void LoadNewVideo(object sender, RoutedEventArgs e)
         {
-            player.Play(path,
-                (sender as Button).Content.ToString());
+            //player.Play(path,
+            //    (sender as Button).Content.ToString());
+            SaveVideoData(null, null);
+
+            player.Play(videos.ElementAt(int.Parse((sender as Button).DataContext.ToString())));
         }
 
         private void VideoView_Loaded(object sender, RoutedEventArgs e)
@@ -92,6 +108,10 @@ namespace video_tracker_v2
 
         private void GoToHomePage(object sender, RoutedEventArgs e)
         {
+            // save current video data, if it was loaded
+            if (player.mPlayer != null)
+                DataManager.UpdateVideoData(categoryName, player.GetVideo());
+
             this.Content = null;
             player.Dispose();
             this.NavigationService.GoBack();
@@ -104,11 +124,14 @@ namespace video_tracker_v2
                 if (sliderTimeline.Maximum != Convert.ToDouble(player.currentMedia.Duration / 60))
                 {
                     sliderTimeline.Maximum = Convert.ToDouble(player.currentMedia.Duration / 60);
+                    player.currentVideo.Duration = Convert.ToUInt32(player.currentMedia.Duration / 60);
                     // making sure volume slider is on some kind of value
                     sliderVolume.Value = 50; // default
                 }
 
                 sliderTimeline.Value = Convert.ToDouble(e.Time / 60);
+                // updating video file too
+                player.currentVideo.CurrentTime = Convert.ToUInt32(e.Time / 60);
             });
         }
 

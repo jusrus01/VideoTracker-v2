@@ -52,7 +52,8 @@ namespace video_tracker_v2
                 foreach(string line in lines)
                 {
                     string[] values = line.Split(';');
-                    videos.Add(new Video(values[0]));
+                    videos.Add(new Video(values[0], uint.Parse(values[1]),
+                        uint.Parse(values[2]), bool.Parse(values[3])));
                 }
             }
             else
@@ -73,9 +74,9 @@ namespace video_tracker_v2
                 DirectoryInfo dicInfo = new DirectoryInfo(path);
                 foreach(FileInfo fi in dicInfo.GetFiles())
                 {
-                    videoData.AppendLine(string.Format("{0};{1};{2};{3};{4}",
-                        fi.FullName, "0", "0", "False", "False"));
-                    videos.Add(new Video(fi.FullName));
+                    videoData.AppendLine(string.Format("{0};{1};{2};{3}",
+                        fi.FullName, "0", "0", "False"));
+                    videos.Add(new Video(fi.FullName, 0, 0, false));
                 }
                 File.WriteAllText(DataPath + '\\' + categoryName, videoData.ToString());
             }
@@ -103,6 +104,23 @@ namespace video_tracker_v2
             {
                 Directory.CreateDirectory(DataPath);
             }
+        }
+
+        public static void UpdateVideoData(string categoryName, Video video)
+        {
+            string[] lines = File.ReadAllLines(DataPath + '\\' + categoryName);
+            int i;
+            string[] values;
+            for (i = 0; i < lines.Length; i++)
+            {
+                values = lines[i].Split(';');
+                if (values[0].Equals(video.Path))
+                {
+                    lines[i] = video.ToString();
+                    break;
+                }
+            }
+            File.WriteAllLines(DataPath + '\\' + categoryName, lines);
         }
     }
 }
