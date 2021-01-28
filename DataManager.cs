@@ -90,6 +90,9 @@ namespace video_tracker_v2
 
         public static bool EntryExists(string entry)
         {
+            if (!File.Exists(MainPath))
+                return false;
+
             string[] values = File.ReadAllLines(MainPath);
             if (values.Contains(entry))
                 return true;
