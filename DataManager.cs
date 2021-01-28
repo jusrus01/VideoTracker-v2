@@ -74,9 +74,13 @@ namespace video_tracker_v2
                 DirectoryInfo dicInfo = new DirectoryInfo(path);
                 foreach(FileInfo fi in dicInfo.GetFiles())
                 {
-                    videoData.AppendLine(string.Format("{0};{1};{2};{3}",
-                        fi.FullName, "0", "0", "False"));
-                    videos.Add(new Video(fi.FullName, 0, 0, false));
+                    // checking if file has a valid extension
+                    if(VideoPlayer.ValidExtensions.Contains(fi.Extension))
+                    {
+                        videoData.AppendLine(string.Format("{0};{1};{2};{3}",
+                            fi.FullName, "0", "0", "False"));
+                        videos.Add(new Video(fi.FullName, 0, 0, false));
+                    }
                 }
                 File.WriteAllText(DataPath + '\\' + categoryName, videoData.ToString());
             }
