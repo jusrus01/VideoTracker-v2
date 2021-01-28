@@ -63,6 +63,7 @@ namespace video_tracker_v2
                 Button btn = (sender as Button);
                 DataManager.RemoveCategoryFromFile(btn.DataContext.ToString());
                 panelCategories.Children.Remove(btn);
+                deleting = false;
             }
             else
             {
