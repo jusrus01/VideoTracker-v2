@@ -34,7 +34,7 @@ namespace video_tracker_v2
         {
             InitializeComponent();
 
-            DataManager.MainPath = @"..\..\categories.data";
+            DataManager.MainPath = "categories.data";
             DataManager.CreateDataFolder();
 
             CreateCategories();

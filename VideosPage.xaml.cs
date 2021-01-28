@@ -111,10 +111,13 @@ namespace video_tracker_v2
 
             ProgressBar bar = new ProgressBar();
             bar.Height = 20;
-            bar.Maximum = v.Duration;
+
+            if (v.Duration == 0)
+                bar.Maximum = 100;
+            else bar.Maximum = v.Duration;
+
             bar.Value = v.CurrentTime;
             bar.BorderThickness = new Thickness(0);
-            
             bar.DataContext = id.ToString();
             bar.HorizontalContentAlignment = HorizontalAlignment.Stretch;
             bar.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -173,6 +176,7 @@ namespace video_tracker_v2
                 curPressedButton.Background = new SolidColorBrush(Color.FromRgb(164, 167, 171));
 
             curProgressBar = (ProgressBar)VisualTreeHelper.GetChild(videoPanel, int.Parse(curPressedButton.DataContext.ToString()) * 2 + 1);
+
         }
 
         private void VideoView_Loaded(object sender, RoutedEventArgs e)
@@ -212,6 +216,10 @@ namespace video_tracker_v2
                 }
 
                 sliderTimeline.Value = Convert.ToDouble(e.Time / 60);
+
+                if (curProgressBar.Maximum == 100)
+                    curProgressBar.Maximum = player.currentVideo.Duration;
+
                 curProgressBar.Value = Convert.ToDouble(e.Time / 60);
 
                 // updating video file too
