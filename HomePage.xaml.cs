@@ -22,6 +22,7 @@ namespace video_tracker_v2
     public partial class HomePage : Page
     {
         private string[] categories;
+        private bool deleting = false;
 
         public HomePage()
         {
@@ -56,12 +57,39 @@ namespace video_tracker_v2
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            VideosPage videosPage = new VideosPage((sender as Button).DataContext as string);
-            this.NavigationService.Navigate(videosPage);
+            if (deleting)
+            {
+                // delete button and remove from file
+                Button btn = (sender as Button);
+                DataManager.RemoveCategoryFromFile(btn.DataContext.ToString());
+                panelCategories.Children.Remove(btn);
+            }
+            else
+            {
+                VideosPage videosPage = new VideosPage((sender as Button).DataContext as string);
+                this.NavigationService.Navigate(videosPage);
+            }
+        }
+
+        private void ToogleRemove(object sender, RoutedEventArgs e)
+        {
+            if (deleting)
+            {
+                deleting = false;
+            }
+            else
+            {
+                deleting = true;
+            }
         }
 
         private void AddCategory(object sender, RoutedEventArgs e)
         {
+            if(deleting)
+            {
+                deleting = false;
+            }
+
             CommonOpenFileDialog openDialog = new CommonOpenFileDialog();
             openDialog.IsFolderPicker = true;
 

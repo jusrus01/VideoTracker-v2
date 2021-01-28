@@ -32,7 +32,7 @@
         </ScrollViewer>
 
         <Button Click="AddCategory" Grid.Row="0" Grid.Column="0" Background="#231F20" Foreground="White">+</Button>
-        <Button Grid.Row="0" Grid.Column="1" Background="#231F20" Foreground="White">-</Button>
+        <Button Click="ToogleRemove" Grid.Row="0" Grid.Column="1" Background="#231F20" Foreground="White">-</Button>
         
     </Grid>
 </Page>
