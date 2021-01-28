@@ -99,6 +99,29 @@ namespace video_tracker_v2
             return false;
         }
 
+        public static void RemoveCategoryFromFile(string path)
+        {
+            // also remove file from data folder if exists
+            string[] lines = File.ReadAllLines(MainPath);
+            int i;
+            string[] values;
+            for (i = 0; i < lines.Length; i++)
+            {
+                values = lines[i].Split(';');
+                if (values[0].Equals(path))
+                {
+                    break;
+                }
+            }
+            lines = lines.Where(w => w != lines[i]).ToArray();
+            File.WriteAllLines(MainPath, lines);
+
+            if(File.Exists(DataPath + '\\' + Path.GetFileName(path)))
+            {
+                File.Delete(DataPath + '\\' + Path.GetFileName(path));
+            }
+        }
+
         public static void CreateDataFolder()
         {
             DataPath = Path.GetDirectoryName(MainPath) + "\\videodata";
@@ -111,6 +134,9 @@ namespace video_tracker_v2
 
         public static void UpdateVideoData(string categoryName, Video video)
         {
+            if (video == null)
+                return;
+
             string[] lines = File.ReadAllLines(DataPath + '\\' + categoryName);
             int i;
             string[] values;
