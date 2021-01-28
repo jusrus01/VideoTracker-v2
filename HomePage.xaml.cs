@@ -14,6 +14,12 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.WindowsAPICodePack.Dialogs;
 
+// TO DO: remove duplicate code
+// TO DO: Fix code
+// TO DO: handle complete
+// fix progress bar
+// implement color change on video completion
+
 namespace video_tracker_v2
 {
     /// <summary>
@@ -48,10 +54,29 @@ namespace video_tracker_v2
 
         private void CreateButton(string path)
         {
+            TextBox textBox = new TextBox();
+            textBox.Text = System.IO.Path.GetFileName(path);
+            textBox.TextWrapping = TextWrapping.Wrap;
+            textBox.FontSize = 26;
+            textBox.Focusable = false;
+            textBox.Background = Brushes.Transparent;
+            textBox.BorderThickness = new Thickness(0);
+            textBox.Cursor = Cursors.Arrow;
+            textBox.Foreground = new SolidColorBrush(Color.FromRgb(249, 250, 249));
+
             Button btn = new Button();
             btn.Click += Button_Click;
             btn.DataContext = path;
-            btn.Content = System.IO.Path.GetFileName(path);
+            btn.Width = 254;
+            btn.Height = 146;
+            btn.Background = new SolidColorBrush(Color.FromRgb(114, 117, 121));
+            btn.VerticalContentAlignment = VerticalAlignment.Center;
+            btn.HorizontalAlignment = HorizontalAlignment.Center;
+            //btn.FontSize = 26;
+            //btn.BorderThickness = new Thickness(0);
+            btn.BorderBrush = new SolidColorBrush(Color.FromRgb(39, 32, 42));
+            //btn.Content = System.IO.Path.GetFileName(path);
+            btn.Content = textBox;
             panelCategories.Children.Add(btn);
         }
 
@@ -64,6 +89,7 @@ namespace video_tracker_v2
                 DataManager.RemoveCategoryFromFile(btn.DataContext.ToString());
                 panelCategories.Children.Remove(btn);
                 deleting = false;
+                btnRemove.Background = new SolidColorBrush(Color.FromRgb(131, 162, 167));
             }
             else
             {
@@ -76,11 +102,13 @@ namespace video_tracker_v2
         {
             if (deleting)
             {
+                btnRemove.Background = new SolidColorBrush(Color.FromRgb(131, 162, 167));
                 deleting = false;
             }
             else
             {
                 deleting = true;
+                btnRemove.Background = new SolidColorBrush(Color.FromRgb(171, 202, 207));
             }
         }
 
@@ -89,6 +117,7 @@ namespace video_tracker_v2
             if(deleting)
             {
                 deleting = false;
+                btnRemove.Background = new SolidColorBrush(Color.FromRgb(131, 162, 167));
             }
 
             CommonOpenFileDialog openDialog = new CommonOpenFileDialog();

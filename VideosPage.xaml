@@ -43,7 +43,7 @@
             <Setter Property="Height" Value="20"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Opacity" Value="0.6"/>
-            
+
         </Style>
         <Style x:Key="RightArrowButtonStyle" TargetType="Button">
             <Setter Property="Background">
@@ -145,9 +145,9 @@
 
     <Grid Name="mainGrid">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="18*"/>
-            <ColumnDefinition Width="23*"/>
-            <ColumnDefinition Width="159*"/>
+            <ColumnDefinition Width="41*"/>
+            <ColumnDefinition Width="41*"/>
+            <ColumnDefinition Width="318*"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -156,11 +156,13 @@
             <RowDefinition Height="8*"/>
         </Grid.RowDefinitions>
 
-        <WrapPanel Orientation="Vertical" Name="videoPanel" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="2">
-            
-        </WrapPanel>
+        <ScrollViewer Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+            <WrapPanel Orientation="Vertical" Name="videoPanel" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="2">
+            </WrapPanel>
+        </ScrollViewer>
 
-        <Button Grid.Column="0" Grid.Row="0" Click="GoToHomePage">Go back</Button>
+        <Button BorderThickness="0" Grid.Column="0" FontSize="16" Foreground="#F9FAF9" Background="#83A2A7" Grid.Row="0" Click="GoToHomePage">Back</Button>
+        <Button BorderThickness="0" Grid.Column="1" FontSize="16" Foreground="#F9FAF9" Background="#83A2A7" Grid.Row="0">Subtitles</Button>
 
         <wpf:VideoView x:Name="videoView" Background="Black"
         Grid.Column="2"  HorizontalAlignment="Stretch" Width="auto" VerticalAlignment="Stretch" 

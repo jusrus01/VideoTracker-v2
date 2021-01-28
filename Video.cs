@@ -9,7 +9,24 @@ namespace video_tracker_v2
     public class Video
     {
         public string Path { get; set; }
-        public uint CurrentTime { get; set; }
+        public uint CurrentTime
+        {
+            get
+            {
+                return CurrentTime;
+            }
+
+            set
+            {
+                this.CurrentTime = CurrentTime;
+
+                if (CurrentTime > Duration - (Duration / 10) && Duration > 0)
+                    Complete = true;
+            }
+        }
+
+        
+
         public uint Duration { get; set; }
         public bool Complete { get; set; }
 

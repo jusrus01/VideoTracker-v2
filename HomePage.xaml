@@ -21,18 +21,15 @@
             <RowDefinition Height="39"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <!-- "#231F20" -->
 
         <ScrollViewer Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" VerticalScrollBarVisibility="Visible">
             <Grid Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1" HorizontalAlignment="Center">
                 <WrapPanel Name="panelCategories" Orientation="Horizontal">
-                    <Button Click="Button_Click" Width="254" Height="146" />
                 </WrapPanel>
             </Grid>
         </ScrollViewer>
-
-        <Button Click="AddCategory" Grid.Row="0" Grid.Column="0" Background="#231F20" Foreground="White">+</Button>
-        <Button Click="ToogleRemove" Grid.Row="0" Grid.Column="1" Background="#231F20" Foreground="White">-</Button>
-        
+        <Rectangle Grid.Column="1" Grid.ColumnSpan="2" Fill="#83A2A7" Stretch="Fill"></Rectangle>
+        <Button Click="AddCategory" Grid.Row="0" BorderThickness="0" Grid.Column="0" FontSize="32" Background="#83A2A7" Foreground="#F9FAF9">+</Button>
+        <Button Name="btnRemove" Click="ToogleRemove" Grid.Row="0" BorderThickness="0" Grid.Column="1" FontSize="32" Background="#83A2A7" Foreground="#F9FAF9">-</Button>
     </Grid>
 </Page>

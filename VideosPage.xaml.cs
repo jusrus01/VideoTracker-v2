@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-//using System.Windows.Media;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -33,6 +33,8 @@ namespace video_tracker_v2
 
         private VideoPlayer player;
         private List<Video> videos;
+        private Button curPressedButton;
+        private ProgressBar curProgressBar;
 
         public VideosPage()
         {
@@ -69,11 +71,59 @@ namespace video_tracker_v2
 
         private void CreateButton(Video v, int id)
         {
+            TextBox textBox = new TextBox();
+            textBox.Text = System.IO.Path.GetFileName(v.Path);
+            textBox.TextWrapping = TextWrapping.Wrap;
+            textBox.HorizontalAlignment = HorizontalAlignment.Left;
+            textBox.HorizontalContentAlignment = HorizontalAlignment.Left;
+            textBox.FontSize = 12;
+            textBox.Focusable = false;
+            textBox.Background = Brushes.Transparent;
+            textBox.BorderThickness = new Thickness(0);
+            textBox.Cursor = Cursors.Arrow;
+            textBox.Foreground = new SolidColorBrush(Color.FromRgb(249, 250, 249));
+
             Button btn = new Button();
-            btn.Content = System.IO.Path.GetFileName(v.Path);
+            btn.Content = textBox;
             btn.Click += LoadNewVideo;
             btn.DataContext = id.ToString();
+            btn.HorizontalAlignment = HorizontalAlignment.Stretch;
+            btn.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+            
+            btn.Height = 50;
+            btn.Background = new SolidColorBrush(Color.FromRgb(114, 117, 121));
+            btn.BorderThickness = new Thickness(0);
             videoPanel.Children.Add(btn);
+
+            ProgressBar bar = new ProgressBar();
+            bar.Height = 20;
+            bar.Maximum = v.Duration;
+            bar.Value = v.CurrentTime;
+            bar.BorderThickness = new Thickness(0);
+            
+            bar.DataContext = id.ToString();
+            bar.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+            bar.HorizontalAlignment = HorizontalAlignment.Stretch;
+            bar.Margin = new Thickness(0, 0, 0, 5);
+            bar.Background = new SolidColorBrush(Color.FromRgb(249, 250, 249));
+            bar.Foreground = new SolidColorBrush(Color.FromRgb(105, 142, 122));
+
+            videoPanel.Children.Add(bar);
+
+
+            
+            //Button btn = new Button();
+            //btn.Click += Button_Click;
+            //btn.DataContext = path;
+            //btn.Width = 254;
+            //btn.VerticalContentAlignment = VerticalAlignment.Center;
+            //btn.HorizontalAlignment = HorizontalAlignment.Center;
+            ////btn.FontSize = 26;
+            ////btn.BorderThickness = new Thickness(0);
+            //btn.BorderBrush = new SolidColorBrush(Color.FromRgb(39, 32, 42));
+            ////btn.Content = System.IO.Path.GetFileName(path);
+            //btn.Content = textBox;
+            //panelCategories.Children.Add(btn);
         }
 
         private void SaveVideoData(object sender, ExitEventArgs e)
@@ -88,9 +138,15 @@ namespace video_tracker_v2
         {
             //player.Play(path,
             //    (sender as Button).Content.ToString());
-            SaveVideoData(null, null);
+            if(curPressedButton != null)
+                curPressedButton.Background = new SolidColorBrush(Color.FromRgb(114, 117, 121));
 
+            SaveVideoData(null, null);
             player.Play(videos.ElementAt(int.Parse((sender as Button).DataContext.ToString())));
+            curPressedButton = (sender as Button);
+            curPressedButton.Background = new SolidColorBrush(Color.FromRgb(164, 167, 171));
+
+            curProgressBar = (ProgressBar)VisualTreeHelper.GetChild(videoPanel, int.Parse(curPressedButton.DataContext.ToString())+1);
         }
 
         private void VideoView_Loaded(object sender, RoutedEventArgs e)
@@ -130,6 +186,8 @@ namespace video_tracker_v2
                 }
 
                 sliderTimeline.Value = Convert.ToDouble(e.Time / 60);
+                curProgressBar.Value = Convert.ToDouble(e.Time / 60);
+
                 // updating video file too
                 player.currentVideo.CurrentTime = Convert.ToUInt32(e.Time / 60);
             });

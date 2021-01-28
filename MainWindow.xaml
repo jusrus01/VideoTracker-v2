@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Video Tracker - Home" Height="600.529" Width="1033"
         ResizeMode="CanResize"
-        Background="Gray"
+        Background="#27202A"
         Source="HomePage.xaml"
         MinWidth="640" MinHeight="480"       
         >
