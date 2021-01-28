@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace video_tracker_v2
 {
+
+    // TO DO: on load subscribe
+    //        and desubscribe on switch
     public class Video
     {
+        public delegate void VideoCompletedDelegate();
+        public VideoCompletedDelegate Completed;
+
         private uint currentTime;
 
         public string Path { get; set; }
@@ -19,12 +25,14 @@ namespace video_tracker_v2
             {
                 this.currentTime = value;
 
-                if (this.currentTime > Duration - (Duration / 10) && Duration > 0)
-                    Complete = true;
+                if(!Complete)
+                    if (this.currentTime > Duration - (Duration / 10) && Duration > 0)
+                    {
+                        Complete = true;
+                        Completed();
+                    }
             }
         }
-
-        
 
         public uint Duration { get; set; }
         public bool Complete { get; set; }

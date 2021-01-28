@@ -69,6 +69,11 @@ namespace video_tracker_v2
             }
         }
 
+        private void OnVideoComplete()
+        {
+            curPressedButton.Background = new SolidColorBrush(Color.FromRgb(85, 122, 102));
+        }
+
         private void CreateButton(Video v, int id)
         {
             TextBox textBox = new TextBox();
@@ -91,7 +96,16 @@ namespace video_tracker_v2
             btn.HorizontalContentAlignment = HorizontalAlignment.Stretch;
             
             btn.Height = 50;
-            btn.Background = new SolidColorBrush(Color.FromRgb(114, 117, 121));
+
+            if(v.Complete)
+            {
+                btn.Background = new SolidColorBrush(Color.FromRgb(85, 122, 102));
+            }
+            else
+            {
+                btn.Background = new SolidColorBrush(Color.FromRgb(114, 117, 121));
+            }
+
             btn.BorderThickness = new Thickness(0);
             videoPanel.Children.Add(btn);
 
@@ -136,15 +150,27 @@ namespace video_tracker_v2
 
         private void LoadNewVideo(object sender, RoutedEventArgs e)
         {
+            if(player.currentVideo != null)
+            {
+                player.currentVideo.Completed -= OnVideoComplete;
+            }
+            
+
             //player.Play(path,
             //    (sender as Button).Content.ToString());
-            if(curPressedButton != null)
+            if(curPressedButton != null && !player.currentVideo.Complete)
                 curPressedButton.Background = new SolidColorBrush(Color.FromRgb(114, 117, 121));
 
             SaveVideoData(null, null);
+
+            
             player.Play(videos.ElementAt(int.Parse((sender as Button).DataContext.ToString())));
             curPressedButton = (sender as Button);
-            curPressedButton.Background = new SolidColorBrush(Color.FromRgb(164, 167, 171));
+            player.currentVideo.Completed += OnVideoComplete;
+            player.SetTime(player.currentVideo.CurrentTime);
+
+            if(!player.currentVideo.Complete)
+                curPressedButton.Background = new SolidColorBrush(Color.FromRgb(164, 167, 171));
 
             curProgressBar = (ProgressBar)VisualTreeHelper.GetChild(videoPanel, int.Parse(curPressedButton.DataContext.ToString()) * 2 + 1);
         }
