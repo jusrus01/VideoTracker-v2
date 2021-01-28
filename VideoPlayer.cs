@@ -93,7 +93,7 @@ namespace video_tracker_v2
             mPlayer.Media = currentMedia;
 
             Play();
-            
+            SetTime(video.CurrentTime);
         }
 
         public void Play()
