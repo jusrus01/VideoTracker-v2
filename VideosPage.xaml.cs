@@ -146,7 +146,7 @@ namespace video_tracker_v2
             curPressedButton = (sender as Button);
             curPressedButton.Background = new SolidColorBrush(Color.FromRgb(164, 167, 171));
 
-            curProgressBar = (ProgressBar)VisualTreeHelper.GetChild(videoPanel, int.Parse(curPressedButton.DataContext.ToString())+1);
+            curProgressBar = (ProgressBar)VisualTreeHelper.GetChild(videoPanel, int.Parse(curPressedButton.DataContext.ToString()) * 2 + 1);
         }
 
         private void VideoView_Loaded(object sender, RoutedEventArgs e)
