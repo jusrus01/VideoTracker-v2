@@ -6,6 +6,10 @@ using System.IO;
 
 namespace video_tracker_v2
 {
+    /// <summary>
+    /// This class is responsible
+    /// for data saving and loading
+    /// </summary>
     public static class DataManager
     {
         public static string MainPath { get; set; }

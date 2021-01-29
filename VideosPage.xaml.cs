@@ -44,6 +44,8 @@ namespace video_tracker_v2
         {
             InitializeComponent();
 
+            this.path = path;
+            categoryName = System.IO.Path.GetFileName(path);
             // init style values
             videoCompletedBrush = new SolidColorBrush(Color.FromRgb(85, 122, 102));
             textBoxBrush = new SolidColorBrush(Color.FromRgb(249, 250, 249));
@@ -53,13 +55,12 @@ namespace video_tracker_v2
             borderNone = new Thickness(0);
             onlyBottomMargin = new Thickness(0, 0, 0, 5);
 
-            this.path = path;
-            categoryName = System.IO.Path.GetFileName(path);
 
             videos = DataManager.LoadVideos(categoryName);
 
             mainWindow = Application.Current.MainWindow;
             Application.Current.Exit += SaveVideoData;
+            mainWindow.Title = "Video Tracker - " + categoryName;
 
             videoView.Loaded += VideoView_Loaded;
 
@@ -190,6 +191,7 @@ namespace video_tracker_v2
             Content = null;
             player.Pause();
             player.Dispose();
+            mainWindow.Title = "Video Tracker - Home";
             NavigationService.GoBack();
         }
 

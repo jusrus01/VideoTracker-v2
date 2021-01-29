@@ -7,8 +7,9 @@
       xmlns:local="clr-namespace:video_tracker_v2"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Video Tracker - Videos" Width="auto" Height="auto"
+      Width="auto" Height="auto"
       KeepAlive="False"
+      x:Name="videoPage"
       >
 
     <Page.Resources>
