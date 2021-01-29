@@ -9,7 +9,8 @@
         ResizeMode="CanResize"
         Background="#27202A"
         Source="HomePage.xaml"
-        MinWidth="640" MinHeight="480"       
+        MinWidth="640" MinHeight="480"
+        Icon="/Resources/sample_icon.ico"
         >
 
 </NavigationWindow>
