@@ -9,7 +9,6 @@ using LibVLCSharp.Shared;
 using System.Timers;
 
 // TO DO:
-// fix loading bug
 // fix player layout
 // fix player buttons
 // add better colors

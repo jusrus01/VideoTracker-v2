@@ -192,13 +192,15 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\double-left.png" />
-    <Resource Include="Resources\double-right.png" />
-    <Resource Include="Resources\play-button.png" />
-    <Resource Include="Resources\speaker.png" />
+    <Resource Include="Resources\sample_icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\sample_icon.ico" />
+    <Resource Include="Resources\play-button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\left-arrow.png" />
+    <Resource Include="Resources\right-arrow.png" />
+    <Resource Include="Resources\speaker.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\VideoLAN.LibVLC.Windows.3.0.12\build\VideoLAN.LibVLC.Windows.targets" Condition="Exists('packages\VideoLAN.LibVLC.Windows.3.0.12\build\VideoLAN.LibVLC.Windows.targets')" />

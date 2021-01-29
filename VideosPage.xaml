@@ -37,7 +37,7 @@
         <Style x:Key="LeftArrowButtonStyle" TargetType="Button">
             <Setter Property="Background">
                 <Setter.Value>
-                    <ImageBrush ImageSource="/Resources/double-left.png"/>
+                    <ImageBrush ImageSource="/Resources/left-arrow.png"/>
                 </Setter.Value>
             </Setter>
             <Setter Property="Width" Value="25"/>
@@ -49,7 +49,7 @@
         <Style x:Key="RightArrowButtonStyle" TargetType="Button">
             <Setter Property="Background">
                 <Setter.Value>
-                    <ImageBrush ImageSource="/Resources/double-right.png"/>
+                    <ImageBrush ImageSource="/Resources/right-arrow.png"/>
                 </Setter.Value>
             </Setter>
             <Setter Property="Width" Value="25"/>
@@ -63,8 +63,8 @@
                     <ImageBrush ImageSource="/Resources/speaker.png"/>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Width" Value="30"/>
-            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="25"/>
+            <Setter Property="Height" Value="25"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Opacity" Value="0.6"/>
         </Style>
@@ -184,8 +184,8 @@
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="369*" MinHeight="377"></RowDefinition>
-                    <RowDefinition Height="20*"/>
-                    <RowDefinition Height="30*"/>
+                    <RowDefinition Height="16*"/>
+                    <RowDefinition Height="34*"/>
                 </Grid.RowDefinitions>
 
                 <Canvas Name="UIWindow" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="2" Background="Black" Opacity="0.005" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" PreviewMouseLeftButtonDown="PreviewLeftMouseButtonDown"
@@ -203,9 +203,9 @@
 
                 <!--https://stackoverflow.com/questions/18845109/change-background-toggle-button-->
 
-                <WrapPanel Name="volumeControls"  Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,10,0">
+                <WrapPanel Name="volumeControls"  Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="0,4,10,0">
                     <Button Style="{StaticResource SpeakerButtonStyle}"/>
-                    <Slider Style="{StaticResource Horizontal_Slider}" Name="sliderVolume" Width="100" Margin="20,0,0,0" Height="18"
+                    <Slider Style="{StaticResource Horizontal_Slider}" Name="sliderVolume" Width="100" Margin="20,4,0,0" Height="18"
                             Maximum="100" IsSnapToTickEnabled="True" IsMoveToPointEnabled="True" TickFrequency="1" ValueChanged="UpdateVideoVolume"/>
                 </WrapPanel>
 
