@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-
 using LibVLCSharp.Shared;
 
 namespace video_tracker_v2
 {
     class VideoPlayer
     {
-        public static string ValidExtensions = ".asx " +
+        public readonly static string ValidExtensions = ".asx " +
             ".dts" +
             ".gxf" +
             ".m2v" +
@@ -62,8 +56,8 @@ namespace video_tracker_v2
             ".mp4";
 
         public MediaPlayer mPlayer { get; set; }
-        public Video currentVideo;
-        public Media currentMedia;
+        public Video currentVideo { get; set; }
+        public Media currentMedia { get; set; }
 
         private LibVLC _libVLC;
 
@@ -75,8 +69,6 @@ namespace video_tracker_v2
             mPlayer = new MediaPlayer(_libVLC);
 
             mPlayer.EnableMouseInput = false;
-            // external subtitles
-            //mPlayer.AddSlave(MediaSlaveType.Subtitle, )
         }
 
         public void Pause()
@@ -89,7 +81,6 @@ namespace video_tracker_v2
             currentVideo = video;
 
             currentMedia = new Media(_libVLC, new Uri(video.Path));
-
             mPlayer.Media = currentMedia;
 
             Play();
@@ -98,25 +89,7 @@ namespace video_tracker_v2
         public void Play()
         {
             mPlayer.Play();
-            // debug Season 7 videos
-            // figure out how to close track
-            //mPlayer.SpuCount;
-            //mPlayer.
-            //mPlayer.Pause();
-            ////mPlayer.Media.AddOption(":sub-track-id=" + int.MaxValue.ToString());
-            //var test = mPlayer.Media.AddOption();
-            ////var test = currentMedia.Tracks;
-            ////int i = 0;
-            ////foreach(MediaTrack track in test)
-            ////{
-            ////    if(track.TrackType == TrackType.Text)
-            ////    {
-            ////        break;
-            ////    }
-            ////    i++;
-            ////}
-
-            //mPlayer.Play();
+           
         }
 
         public void SetTime(double time)
@@ -135,8 +108,8 @@ namespace video_tracker_v2
 
         public void Dispose()
         {
-            _libVLC.Dispose();
             mPlayer.Dispose();
+            _libVLC.Dispose();
         }
 
         public Video GetVideo()

@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using LibVLCSharp.Shared;
-using LibVLCSharp.WPF;
 using System.Timers;
 
 namespace video_tracker_v2
@@ -33,22 +25,38 @@ namespace video_tracker_v2
 
         private VideoPlayer player;
         private List<Video> videos;
+
         private Button curPressedButton;
         private ProgressBar curProgressBar;
 
-        public VideosPage()
-        {
+        private SolidColorBrush videoCompletedBrush;
+        private SolidColorBrush videoBrush;
+        private SolidColorBrush activeVideoBrush;
+        private SolidColorBrush textBoxBrush;
+        private SolidColorBrush greenishBrush;
 
-        }
+        private int fontSize = 12;
+
+        private Thickness borderNone;
+        private Thickness onlyBottomMargin;
 
         public VideosPage(string path)
         {
             InitializeComponent();
 
-            this.path = path;
-            this.categoryName = System.IO.Path.GetFileName(path);
+            // init style values
+            videoCompletedBrush = new SolidColorBrush(Color.FromRgb(85, 122, 102));
+            textBoxBrush = new SolidColorBrush(Color.FromRgb(249, 250, 249));
+            videoBrush = new SolidColorBrush(Color.FromRgb(114, 117, 121));
+            greenishBrush = new SolidColorBrush(Color.FromRgb(105, 142, 122));
+            activeVideoBrush = new SolidColorBrush(Color.FromRgb(164, 167, 171));
+            borderNone = new Thickness(0);
+            onlyBottomMargin = new Thickness(0, 0, 0, 5);
 
-            videos = DataManager.LoadVideos(this.categoryName);
+            this.path = path;
+            categoryName = System.IO.Path.GetFileName(path);
+
+            videos = DataManager.LoadVideos(categoryName);
 
             mainWindow = Application.Current.MainWindow;
             Application.Current.Exit += SaveVideoData;
@@ -71,22 +79,23 @@ namespace video_tracker_v2
 
         private void OnVideoComplete()
         {
-            curPressedButton.Background = new SolidColorBrush(Color.FromRgb(85, 122, 102));
+            curPressedButton.Background = videoCompletedBrush;
         }
 
         private void CreateButton(Video v, int id)
         {
             TextBox textBox = new TextBox();
+
             textBox.Text = System.IO.Path.GetFileName(v.Path);
             textBox.TextWrapping = TextWrapping.Wrap;
             textBox.HorizontalAlignment = HorizontalAlignment.Left;
             textBox.HorizontalContentAlignment = HorizontalAlignment.Left;
-            textBox.FontSize = 12;
+            textBox.FontSize = fontSize;
             textBox.Focusable = false;
             textBox.Background = Brushes.Transparent;
-            textBox.BorderThickness = new Thickness(0);
+            textBox.BorderThickness = borderNone;
             textBox.Cursor = Cursors.Arrow;
-            textBox.Foreground = new SolidColorBrush(Color.FromRgb(249, 250, 249));
+            textBox.Foreground = textBoxBrush;
 
             Button btn = new Button();
             btn.Content = textBox;
@@ -94,53 +103,39 @@ namespace video_tracker_v2
             btn.DataContext = id.ToString();
             btn.HorizontalAlignment = HorizontalAlignment.Stretch;
             btn.HorizontalContentAlignment = HorizontalAlignment.Stretch;
-            
             btn.Height = 50;
 
             if(v.Complete)
             {
-                btn.Background = new SolidColorBrush(Color.FromRgb(85, 122, 102));
+                btn.Background = videoCompletedBrush;
             }
             else
             {
-                btn.Background = new SolidColorBrush(Color.FromRgb(114, 117, 121));
+                btn.Background = videoBrush;
             }
 
-            btn.BorderThickness = new Thickness(0);
+            btn.BorderThickness = borderNone;
             videoPanel.Children.Add(btn);
 
             ProgressBar bar = new ProgressBar();
+
             bar.Height = 20;
 
             if (v.Duration == 0)
                 bar.Maximum = 100;
-            else bar.Maximum = v.Duration;
+            else
+                bar.Maximum = v.Duration;
 
             bar.Value = v.CurrentTime;
-            bar.BorderThickness = new Thickness(0);
+            bar.BorderThickness = borderNone;
             bar.DataContext = id.ToString();
             bar.HorizontalContentAlignment = HorizontalAlignment.Stretch;
             bar.HorizontalAlignment = HorizontalAlignment.Stretch;
-            bar.Margin = new Thickness(0, 0, 0, 5);
-            bar.Background = new SolidColorBrush(Color.FromRgb(249, 250, 249));
-            bar.Foreground = new SolidColorBrush(Color.FromRgb(105, 142, 122));
+            bar.Margin = onlyBottomMargin;
+            bar.Background = textBoxBrush;
+            bar.Foreground = greenishBrush;
 
             videoPanel.Children.Add(bar);
-
-
-            
-            //Button btn = new Button();
-            //btn.Click += Button_Click;
-            //btn.DataContext = path;
-            //btn.Width = 254;
-            //btn.VerticalContentAlignment = VerticalAlignment.Center;
-            //btn.HorizontalAlignment = HorizontalAlignment.Center;
-            ////btn.FontSize = 26;
-            ////btn.BorderThickness = new Thickness(0);
-            //btn.BorderBrush = new SolidColorBrush(Color.FromRgb(39, 32, 42));
-            ////btn.Content = System.IO.Path.GetFileName(path);
-            //btn.Content = textBox;
-            //panelCategories.Children.Add(btn);
         }
 
         private void SaveVideoData(object sender, ExitEventArgs e)
@@ -157,23 +152,19 @@ namespace video_tracker_v2
             {
                 player.currentVideo.Completed -= OnVideoComplete;
             }
-            
 
-            //player.Play(path,
-            //    (sender as Button).Content.ToString());
-            if(curPressedButton != null && !player.currentVideo.Complete)
-                curPressedButton.Background = new SolidColorBrush(Color.FromRgb(114, 117, 121));
+            if (curPressedButton != null && !player.currentVideo.Complete)
+                curPressedButton.Background = videoBrush;
 
             SaveVideoData(null, null);
-
             
             player.Play(videos.ElementAt(int.Parse((sender as Button).DataContext.ToString())));
             curPressedButton = (sender as Button);
             player.currentVideo.Completed += OnVideoComplete;
             player.SetTime(player.currentVideo.CurrentTime);
 
-            if(!player.currentVideo.Complete)
-                curPressedButton.Background = new SolidColorBrush(Color.FromRgb(164, 167, 171));
+            if (!player.currentVideo.Complete)
+                curPressedButton.Background = activeVideoBrush;
 
             curProgressBar = (ProgressBar)VisualTreeHelper.GetChild(videoPanel, int.Parse(curPressedButton.DataContext.ToString()) * 2 + 1);
 
@@ -182,10 +173,8 @@ namespace video_tracker_v2
         private void VideoView_Loaded(object sender, RoutedEventArgs e)
         {
             player = new VideoPlayer();
-
             videoView.MediaPlayer = player.mPlayer;
-
-            player.mPlayer.TimeChanged += UpdateTimeSlider;
+            player.mPlayer.TimeChanged += Update;
 
             // making sure user can't
             // start playing video until video view is loaded
@@ -198,12 +187,13 @@ namespace video_tracker_v2
             if (player.mPlayer != null)
                 DataManager.UpdateVideoData(categoryName, player.GetVideo());
 
-            this.Content = null;
+            Content = null;
+            player.Pause();
             player.Dispose();
-            this.NavigationService.GoBack();
+            NavigationService.GoBack();
         }
 
-        private void UpdateTimeSlider(object sender, MediaPlayerTimeChangedEventArgs e)
+        private void Update(object sender, MediaPlayerTimeChangedEventArgs e)
         {
             sliderTimeline.Dispatcher.Invoke(() =>
             {

@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-
 using System.IO;
 
 namespace video_tracker_v2
 {
-    // clear bad input (?)
     public static class DataManager
     {
         public static string MainPath { get; set; }
@@ -35,21 +32,20 @@ namespace video_tracker_v2
             }
             return null;
         }
-
-        // TO DO: add files check
+        
         public static List<Video> LoadVideos(string categoryName)
         {
             // if file doesn't exists
             // create file
             // and return all videos with data
             List<Video> videos = new List<Video>();
+            string dataFile = DataPath + '\\' + categoryName;
 
-            if(File.Exists(DataPath + '\\' + categoryName))
+            if (File.Exists(dataFile))
             {
-                string path = DataPath + '\\' + categoryName;
-                string[] lines = File.ReadAllLines(path);
+                string[] lines = File.ReadAllLines(dataFile);
 
-                foreach(string line in lines)
+                foreach (string line in lines)
                 {
                     string[] values = line.Split(';');
                     videos.Add(new Video(values[0], uint.Parse(values[1]),
@@ -82,7 +78,7 @@ namespace video_tracker_v2
                         videos.Add(new Video(fi.FullName, 0, 0, false));
                     }
                 }
-                File.WriteAllText(DataPath + '\\' + categoryName, videoData.ToString());
+                File.WriteAllText(dataFile, videoData.ToString());
             }
             return videos;
         }
@@ -98,6 +94,7 @@ namespace video_tracker_v2
                 return false;
 
             string[] values = File.ReadAllLines(MainPath);
+
             if (values.Contains(entry))
                 return true;
             return false;
@@ -118,11 +115,13 @@ namespace video_tracker_v2
                 }
             }
             lines = lines.Where(w => w != lines[i]).ToArray();
-            File.WriteAllLines(MainPath, lines);
 
-            if(File.Exists(DataPath + '\\' + Path.GetFileName(path)))
+            File.WriteAllLines(MainPath, lines);
+            string dataFile = DataPath + '\\' + Path.GetFileName(path);
+
+            if (File.Exists(dataFile))
             {
-                File.Delete(DataPath + '\\' + Path.GetFileName(path));
+                File.Delete(dataFile);
             }
         }
 
@@ -140,10 +139,11 @@ namespace video_tracker_v2
         {
             if (video == null)
                 return;
-
-            string[] lines = File.ReadAllLines(DataPath + '\\' + categoryName);
+            string dataFile = DataPath + '\\' + categoryName;
+            string[] lines = File.ReadAllLines(dataFile);
             int i;
             string[] values;
+
             for (i = 0; i < lines.Length; i++)
             {
                 values = lines[i].Split(';');
@@ -153,7 +153,8 @@ namespace video_tracker_v2
                     break;
                 }
             }
-            File.WriteAllLines(DataPath + '\\' + categoryName, lines);
+
+            File.WriteAllLines(dataFile, lines);
         }
     }
 }

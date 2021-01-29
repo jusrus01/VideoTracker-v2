@@ -1,24 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Microsoft.WindowsAPICodePack.Dialogs;
-
-// TO DO: remove duplicate code
-// TO DO: Fix code
-// TO DO: handle complete
-// fix progress bar
-// implement color change on video completion
 
 namespace video_tracker_v2
 {
@@ -30,6 +14,18 @@ namespace video_tracker_v2
         private string[] categories;
         private bool deleting = false;
 
+        // dynamic elements style values
+        private Thickness borderThickness;
+        private SolidColorBrush textBoxBrush;
+        private SolidColorBrush categoryNormalBrush;
+        private SolidColorBrush buttonNormalBrush;
+        private SolidColorBrush buttonActiveBrush;
+        private SolidColorBrush borderBrush;
+
+        private readonly int categoryWidth = 254;
+        private readonly int categoryHeight = 146;
+        private readonly int fontSize = 26;
+
         public HomePage()
         {
             InitializeComponent();
@@ -37,16 +33,25 @@ namespace video_tracker_v2
             DataManager.MainPath = "categories.data";
             DataManager.CreateDataFolder();
 
+            // init style values
+            borderThickness = new Thickness(0);
+            textBoxBrush = new SolidColorBrush(Color.FromRgb(249, 250, 249));
+            categoryNormalBrush = new SolidColorBrush(Color.FromRgb(114, 117, 121));
+            buttonNormalBrush = new SolidColorBrush(Color.FromRgb(131, 162, 167));
+            buttonActiveBrush = new SolidColorBrush(Color.FromRgb(171, 202, 207));
+            borderBrush = new SolidColorBrush(Color.FromRgb(39, 32, 42));
+
             CreateCategories();
         }
 
         private void CreateCategories()
         {
             categories = DataManager.LoadCategories();
+
             if (categories == null)
                 return;
 
-            foreach(string path in categories)
+            foreach (string path in categories)
             {
                 CreateButton(path);
             }
@@ -55,28 +60,28 @@ namespace video_tracker_v2
         private void CreateButton(string path)
         {
             TextBox textBox = new TextBox();
+
             textBox.Text = System.IO.Path.GetFileName(path);
             textBox.TextWrapping = TextWrapping.Wrap;
-            textBox.FontSize = 26;
+            textBox.FontSize = fontSize;
             textBox.Focusable = false;
             textBox.Background = Brushes.Transparent;
-            textBox.BorderThickness = new Thickness(0);
+            textBox.BorderThickness = borderThickness;
             textBox.Cursor = Cursors.Arrow;
-            textBox.Foreground = new SolidColorBrush(Color.FromRgb(249, 250, 249));
+            textBox.Foreground = textBoxBrush;
 
             Button btn = new Button();
+
             btn.Click += Button_Click;
             btn.DataContext = path;
-            btn.Width = 254;
-            btn.Height = 146;
-            btn.Background = new SolidColorBrush(Color.FromRgb(114, 117, 121));
+            btn.Width = categoryWidth;
+            btn.Height = categoryHeight;
+            btn.Background = categoryNormalBrush;
             btn.VerticalContentAlignment = VerticalAlignment.Center;
             btn.HorizontalAlignment = HorizontalAlignment.Center;
-            //btn.FontSize = 26;
-            //btn.BorderThickness = new Thickness(0);
-            btn.BorderBrush = new SolidColorBrush(Color.FromRgb(39, 32, 42));
-            //btn.Content = System.IO.Path.GetFileName(path);
+            btn.BorderBrush = borderBrush;
             btn.Content = textBox;
+
             panelCategories.Children.Add(btn);
         }
 
@@ -88,8 +93,7 @@ namespace video_tracker_v2
                 Button btn = (sender as Button);
                 DataManager.RemoveCategoryFromFile(btn.DataContext.ToString());
                 panelCategories.Children.Remove(btn);
-                deleting = false;
-                btnRemove.Background = new SolidColorBrush(Color.FromRgb(131, 162, 167));
+                ToogleRemove(null, null);
             }
             else
             {
@@ -102,23 +106,19 @@ namespace video_tracker_v2
         {
             if (deleting)
             {
-                btnRemove.Background = new SolidColorBrush(Color.FromRgb(131, 162, 167));
+                btnRemove.Background = buttonNormalBrush;
                 deleting = false;
             }
             else
             {
                 deleting = true;
-                btnRemove.Background = new SolidColorBrush(Color.FromRgb(171, 202, 207));
+                btnRemove.Background = buttonActiveBrush;
             }
         }
 
         private void AddCategory(object sender, RoutedEventArgs e)
         {
-            if(deleting)
-            {
-                deleting = false;
-                btnRemove.Background = new SolidColorBrush(Color.FromRgb(131, 162, 167));
-            }
+            ToogleRemove(null, null);
 
             CommonOpenFileDialog openDialog = new CommonOpenFileDialog();
             openDialog.IsFolderPicker = true;

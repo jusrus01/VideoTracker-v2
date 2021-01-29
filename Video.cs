@@ -1,22 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace video_tracker_v2
+﻿namespace video_tracker_v2
 {
-
-    // TO DO: on load subscribe
-    //        and desubscribe on switch
     public class Video
     {
         public delegate void VideoCompletedDelegate();
         public VideoCompletedDelegate Completed;
 
-        private uint currentTime;
-
         public string Path { get; set; }
+
         public uint CurrentTime
         {
             get { return currentTime; }
@@ -25,17 +15,25 @@ namespace video_tracker_v2
             {
                 this.currentTime = value;
 
-                if(!Complete)
-                    if (this.currentTime > Duration - (Duration / 10) && Duration > 0)
+                if (!Complete)
+                {
+                    if (videoEndedAt == 0)
+                        videoEndedAt = Duration - (Duration / 10);
+
+                    if (this.currentTime > videoEndedAt && Duration > 0)
                     {
                         Complete = true;
                         Completed();
                     }
+                }
             }
         }
 
         public uint Duration { get; set; }
         public bool Complete { get; set; }
+
+        private uint currentTime;
+        private uint videoEndedAt;
 
         public Video(string path, uint curTime, uint duration, bool complete)
         {
