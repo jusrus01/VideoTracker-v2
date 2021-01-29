@@ -118,7 +118,8 @@ namespace video_tracker_v2
 
         private void AddCategory(object sender, RoutedEventArgs e)
         {
-            ToogleRemove(null, null);
+            if(deleting)
+                ToogleRemove(null, null);
 
             CommonOpenFileDialog openDialog = new CommonOpenFileDialog();
             openDialog.IsFolderPicker = true;
