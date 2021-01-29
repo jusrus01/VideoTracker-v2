@@ -185,8 +185,8 @@
             </WrapPanel>
         </ScrollViewer>
 
-        <Button BorderThickness="0" Grid.Column="0" FontSize="16" Foreground="#F9FAF9" Background="#83A2A7" Grid.Row="0" Click="GoToHomePage">Back</Button>
-        <Button BorderThickness="0" Grid.Column="1" FontSize="16" Foreground="#F9FAF9" Background="#83A2A7" Grid.Row="0">Subtitles</Button>
+        <Button BorderThickness="0" Grid.Column="0" FontSize="16" Foreground="#FFFCF2" Background="#eb5e28" Grid.Row="0" Click="GoToHomePage">Back</Button>
+        <Button BorderThickness="0" Grid.Column="1" FontSize="16" Foreground="#FFFCF2" Background="#eb5e28" Grid.Row="0">Subtitles</Button>
 
         <wpf:VideoView x:Name="videoView" Background="Black"
         Grid.Column="2"  HorizontalAlignment="Stretch" Width="auto" VerticalAlignment="Stretch" 

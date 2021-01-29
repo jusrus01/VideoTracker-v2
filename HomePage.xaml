@@ -28,8 +28,8 @@
                 </WrapPanel>
             </Grid>
         </ScrollViewer>
-        <Rectangle Grid.Column="1" Grid.ColumnSpan="2" Fill="#83A2A7" Stretch="Fill"></Rectangle>
-        <Button Click="AddCategory" Grid.Row="0" BorderThickness="0" Grid.Column="0" FontSize="32" Background="#83A2A7" Foreground="#F9FAF9">+</Button>
-        <Button Name="btnRemove" Click="ToogleRemove" Grid.Row="0" BorderThickness="0" Grid.Column="1" FontSize="32" Background="#83A2A7" Foreground="#F9FAF9">-</Button>
+        <Rectangle Grid.Column="1" Grid.ColumnSpan="2" Fill="#eb5e28" Stretch="Fill"></Rectangle>
+        <Button Click="AddCategory" Grid.Row="0" BorderThickness="0" Grid.Column="0" FontSize="32" Background="#eb5e28" Foreground="#FFFCF2">+</Button>
+        <Button Name="btnRemove" Click="ToogleRemove" Grid.Row="0" BorderThickness="0" Grid.Column="1" FontSize="32" Background="#eb5e28" Foreground="#FFFCF2">-</Button>
     </Grid>
 </Page>

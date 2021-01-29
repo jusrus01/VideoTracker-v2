@@ -38,7 +38,7 @@ namespace video_tracker_v2
         private SolidColorBrush videoBrush;
         private SolidColorBrush activeVideoBrush;
         private SolidColorBrush textBoxBrush;
-        private SolidColorBrush greenishBrush;
+        private SolidColorBrush orangeBrush;
 
         private int fontSize = 12;
 
@@ -52,11 +52,11 @@ namespace video_tracker_v2
             this.path = path;
             categoryName = System.IO.Path.GetFileName(path);
             // init style values
-            videoCompletedBrush = new SolidColorBrush(Color.FromRgb(85, 122, 102));
-            textBoxBrush = new SolidColorBrush(Color.FromRgb(229, 230, 229));
-            videoBrush = new SolidColorBrush(Color.FromRgb(94, 97, 101));
-            greenishBrush = new SolidColorBrush(Color.FromRgb(105, 142, 122));
-            activeVideoBrush = new SolidColorBrush(Color.FromRgb(164, 167, 171));
+            videoCompletedBrush = new SolidColorBrush(Color.FromRgb(235, 94, 40));
+            textBoxBrush = new SolidColorBrush(Color.FromRgb(255, 252, 242));
+            videoBrush = new SolidColorBrush(Color.FromRgb(64, 61, 57));
+            orangeBrush = new SolidColorBrush(Color.FromRgb(235, 94, 40));
+            activeVideoBrush = new SolidColorBrush(Color.FromRgb(104, 101, 97));
             borderNone = new Thickness(0);
             onlyBottomMargin = new Thickness(0, 0, 0, 5);
 
@@ -138,7 +138,7 @@ namespace video_tracker_v2
             bar.HorizontalAlignment = HorizontalAlignment.Stretch;
             bar.Margin = onlyBottomMargin;
             bar.Background = textBoxBrush;
-            bar.Foreground = greenishBrush;
+            bar.Foreground = orangeBrush;
 
             videoPanel.Children.Add(bar);
         }

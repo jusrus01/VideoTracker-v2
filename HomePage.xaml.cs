@@ -36,11 +36,11 @@ namespace video_tracker_v2
 
             // init style values
             borderThickness = new Thickness(0);
-            textBoxBrush = new SolidColorBrush(Color.FromRgb(249, 250, 249));
-            categoryNormalBrush = new SolidColorBrush(Color.FromRgb(114, 117, 121));
-            buttonNormalBrush = new SolidColorBrush(Color.FromRgb(131, 162, 167));
-            buttonActiveBrush = new SolidColorBrush(Color.FromRgb(171, 202, 207));
-            borderBrush = new SolidColorBrush(Color.FromRgb(39, 32, 42));
+            textBoxBrush = new SolidColorBrush(Color.FromRgb(255, 252, 242));
+            categoryNormalBrush = new SolidColorBrush(Color.FromRgb(64, 61, 57));
+            buttonNormalBrush = new SolidColorBrush(Color.FromRgb(235, 94, 40));
+            buttonActiveBrush = new SolidColorBrush(Color.FromRgb(245, 134, 80));
+            borderBrush = new SolidColorBrush(Color.FromRgb(37, 36, 34));
             margin = new Thickness(5, 10, 5, 0);
 
             CreateCategories();
