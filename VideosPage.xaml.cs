@@ -8,6 +8,12 @@ using System.Windows.Media;
 using LibVLCSharp.Shared;
 using System.Timers;
 
+// TO DO:
+// fix loading bug
+// fix player layout
+// fix player buttons
+// add better colors
+
 namespace video_tracker_v2
 {
     /// <summary>
@@ -54,7 +60,6 @@ namespace video_tracker_v2
             activeVideoBrush = new SolidColorBrush(Color.FromRgb(164, 167, 171));
             borderNone = new Thickness(0);
             onlyBottomMargin = new Thickness(0, 0, 0, 5);
-
 
             videos = DataManager.LoadVideos(categoryName);
 
@@ -151,14 +156,13 @@ namespace video_tracker_v2
         {
             if(player.currentVideo != null)
             {
+                SaveVideoData(null, null);
                 player.currentVideo.Completed -= OnVideoComplete;
             }
 
             if (curPressedButton != null && !player.currentVideo.Complete)
                 curPressedButton.Background = videoBrush;
 
-            SaveVideoData(null, null);
-            
             player.Play(videos.ElementAt(int.Parse((sender as Button).DataContext.ToString())));
             curPressedButton = (sender as Button);
             player.currentVideo.Completed += OnVideoComplete;
@@ -188,7 +192,6 @@ namespace video_tracker_v2
             if (player.mPlayer != null)
                 DataManager.UpdateVideoData(categoryName, player.GetVideo());
 
-            Content = null;
             player.Pause();
             player.Dispose();
             mainWindow.Title = "Video Tracker - Home";

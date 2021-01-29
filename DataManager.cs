@@ -157,7 +157,6 @@ namespace video_tracker_v2
                     break;
                 }
             }
-
             File.WriteAllLines(dataFile, lines);
         }
     }
