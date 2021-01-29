@@ -16,6 +16,7 @@ namespace video_tracker_v2
 
         // dynamic elements style values
         private Thickness borderThickness;
+        private Thickness margin;
         private SolidColorBrush textBoxBrush;
         private SolidColorBrush categoryNormalBrush;
         private SolidColorBrush buttonNormalBrush;
@@ -40,6 +41,7 @@ namespace video_tracker_v2
             buttonNormalBrush = new SolidColorBrush(Color.FromRgb(131, 162, 167));
             buttonActiveBrush = new SolidColorBrush(Color.FromRgb(171, 202, 207));
             borderBrush = new SolidColorBrush(Color.FromRgb(39, 32, 42));
+            margin = new Thickness(5, 10, 5, 0);
 
             CreateCategories();
         }
@@ -63,6 +65,7 @@ namespace video_tracker_v2
 
             textBox.Text = System.IO.Path.GetFileName(path);
             textBox.TextWrapping = TextWrapping.Wrap;
+            textBox.HorizontalContentAlignment = HorizontalAlignment.Center;
             textBox.FontSize = fontSize;
             textBox.Focusable = false;
             textBox.Background = Brushes.Transparent;
@@ -81,6 +84,7 @@ namespace video_tracker_v2
             btn.HorizontalAlignment = HorizontalAlignment.Center;
             btn.BorderBrush = borderBrush;
             btn.Content = textBox;
+            btn.Margin = margin;
 
             panelCategories.Children.Add(btn);
         }

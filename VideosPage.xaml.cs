@@ -53,8 +53,8 @@ namespace video_tracker_v2
             categoryName = System.IO.Path.GetFileName(path);
             // init style values
             videoCompletedBrush = new SolidColorBrush(Color.FromRgb(85, 122, 102));
-            textBoxBrush = new SolidColorBrush(Color.FromRgb(249, 250, 249));
-            videoBrush = new SolidColorBrush(Color.FromRgb(114, 117, 121));
+            textBoxBrush = new SolidColorBrush(Color.FromRgb(229, 230, 229));
+            videoBrush = new SolidColorBrush(Color.FromRgb(94, 97, 101));
             greenishBrush = new SolidColorBrush(Color.FromRgb(105, 142, 122));
             activeVideoBrush = new SolidColorBrush(Color.FromRgb(164, 167, 171));
             borderNone = new Thickness(0);

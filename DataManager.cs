@@ -143,6 +143,7 @@ namespace video_tracker_v2
         {
             if (video == null)
                 return;
+
             string dataFile = DataPath + '\\' + categoryName;
             string[] lines = File.ReadAllLines(dataFile);
             int i;
