@@ -10,7 +10,7 @@
         Background="#252422"
         Source="HomePage.xaml"
         MinWidth="640" MinHeight="480"
-        Icon="/Resources/sample_icon.ico"
+        Icon="Resources/sample_icon.ico"
         >
 
 </NavigationWindow>

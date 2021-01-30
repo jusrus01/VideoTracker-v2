@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using LibVLCSharp.Shared;
 using System.Timers;
 
@@ -40,6 +41,9 @@ namespace video_tracker_v2
         private SolidColorBrush textBoxBrush;
         private SolidColorBrush orangeBrush;
 
+        private ImageBrush playImageBrush;
+        private ImageBrush pauseImageBrush;
+
         private int fontSize = 12;
 
         private Thickness borderNone;
@@ -59,6 +63,9 @@ namespace video_tracker_v2
             activeVideoBrush = new SolidColorBrush(Color.FromRgb(104, 101, 97));
             borderNone = new Thickness(0);
             onlyBottomMargin = new Thickness(0, 0, 0, 5);
+
+            playImageBrush = new ImageBrush(new BitmapImage(new Uri(@"..\..\Resources\play-button.png", UriKind.Relative)));
+            pauseImageBrush = new ImageBrush(new BitmapImage(new Uri(@"..\..\Resources\pause-button.png", UriKind.Relative)));
 
             videos = DataManager.LoadVideos(categoryName);
 
@@ -163,6 +170,9 @@ namespace video_tracker_v2
                 curPressedButton.Background = videoBrush;
 
             player.Play(videos.ElementAt(int.Parse((sender as Button).DataContext.ToString())));
+
+            btnPlay.Background = pauseImageBrush;
+
             curPressedButton = (sender as Button);
             player.currentVideo.Completed += OnVideoComplete;
             player.SetTime(player.currentVideo.CurrentTime);
@@ -312,10 +322,12 @@ namespace video_tracker_v2
             if(player.mPlayer.IsPlaying)
             {
                 player.Pause();
+                btnPlay.Background = playImageBrush;
             }
             else
             {
                 player.Play();
+                btnPlay.Background = pauseImageBrush;
             }
         }
 

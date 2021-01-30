@@ -131,7 +131,8 @@ namespace video_tracker_v2
 
         public static void CreateDataFolder()
         {
-            DataPath = Path.GetDirectoryName(MainPath) + "\\videodata";
+            //DataPath = Path.GetDirectoryName(MainPath) + "\\videodata";
+            DataPath = "videodata";
             // check if it already exists
             if(!Directory.Exists(DataPath))
             {
