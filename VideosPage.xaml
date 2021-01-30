@@ -220,9 +220,9 @@
 
                 <WrapPanel Name="UIControls" HorizontalAlignment="Center"
                            Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2">
-                    <Button Style="{StaticResource LeftArrowButtonStyle}" Margin="0,0,10,0"/>
+                    <Button Style="{StaticResource LeftArrowButtonStyle}" Tag="-1" Click="Move"  Margin="0,0,10,0"/>
                     <Button Name="btnPlay" Click="PlayVideo" Style="{StaticResource  PlayButtonStyle}" Width="auto" MinWidth="40" MinHeight="40"/>
-                    <Button Style="{StaticResource RightArrowButtonStyle}" Margin="10,0,0,0"/>
+                    <Button Style="{StaticResource RightArrowButtonStyle}" Tag="1" Click="Move"  Margin="10,0,0,0"/>
                 </WrapPanel>
 
                 <WrapPanel Name="volumeControls" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="0,4,10,0">

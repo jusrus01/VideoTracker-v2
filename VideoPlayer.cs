@@ -117,5 +117,16 @@ namespace video_tracker_v2
         {
             return currentVideo;
         }
+
+        public void MoveBy(int msTime)
+        {
+            if(msTime < 0 && mPlayer.Time - msTime < 0)
+            {
+                mPlayer.Time = 0;
+                return;
+            }
+
+            mPlayer.Time += msTime;
+        }
     }
 }

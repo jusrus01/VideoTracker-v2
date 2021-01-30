@@ -179,6 +179,24 @@ namespace video_tracker_v2
 
         }
 
+        private void Move(object sender, RoutedEventArgs e)
+        {
+            if (player.currentMedia == null || !player.mPlayer.IsPlaying)
+                return;
+
+            int value = int.Parse((sender as Button).Tag.ToString());
+
+            if(value > 0) // right
+            {
+                player.MoveBy(300);
+            }
+            else
+            {
+                // left
+                player.MoveBy(-300);
+            }
+        }
+
         private void VideoView_Loaded(object sender, RoutedEventArgs e)
         {
             player = new VideoPlayer();
