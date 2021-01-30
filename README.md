@@ -5,5 +5,3 @@ This program is designed to help keep track of videos watched within a specified
 ## Application screenshots
 ![image](https://drive.google.com/uc?export=view&id=18uHMWe1us6gJPMDoJx-5nqsJT5JgI2nl)
 ![image](https://drive.google.com/uc?export=view&id=109mVwe4FZeAIIxYKWzyBP7f2K1KfGQLm)
-## To do
-* Need to implement a way to change subtitle tracks.
