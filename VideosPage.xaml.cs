@@ -40,6 +40,7 @@ namespace video_tracker_v2
         private SolidColorBrush activeVideoBrush;
         private SolidColorBrush textBoxBrush;
         private SolidColorBrush orangeBrush;
+        private SolidColorBrush barBackBrush;
 
         private ImageBrush playImageBrush;
         private ImageBrush pauseImageBrush;
@@ -57,10 +58,11 @@ namespace video_tracker_v2
             categoryName = System.IO.Path.GetFileName(path);
             // init style values
             videoCompletedBrush = new SolidColorBrush(Color.FromRgb(235, 94, 40));
-            textBoxBrush = new SolidColorBrush(Color.FromRgb(255, 252, 242));
+            textBoxBrush = new SolidColorBrush(Color.FromRgb(235, 232, 222));
             videoBrush = new SolidColorBrush(Color.FromRgb(64, 61, 57));
             orangeBrush = new SolidColorBrush(Color.FromRgb(235, 94, 40));
             activeVideoBrush = new SolidColorBrush(Color.FromRgb(104, 101, 97));
+            barBackBrush = new SolidColorBrush(Color.FromRgb(44, 41, 37));
             borderNone = new Thickness(0);
             onlyBottomMargin = new Thickness(0, 0, 0, 5);
 
@@ -98,7 +100,7 @@ namespace video_tracker_v2
         {
             TextBox textBox = new TextBox();
 
-            textBox.Text = System.IO.Path.GetFileName(v.Path);
+            textBox.Text = System.IO.Path.GetFileNameWithoutExtension(v.Path);
             textBox.TextWrapping = TextWrapping.Wrap;
             textBox.HorizontalAlignment = HorizontalAlignment.Left;
             textBox.HorizontalContentAlignment = HorizontalAlignment.Left;
@@ -116,6 +118,7 @@ namespace video_tracker_v2
             btn.HorizontalAlignment = HorizontalAlignment.Stretch;
             btn.HorizontalContentAlignment = HorizontalAlignment.Stretch;
             btn.Height = 50;
+            btn.BorderThickness = borderNone;
 
             if(v.Complete)
             {
@@ -126,11 +129,9 @@ namespace video_tracker_v2
                 btn.Background = videoBrush;
             }
 
-            btn.BorderThickness = borderNone;
             videoPanel.Children.Add(btn);
 
             ProgressBar bar = new ProgressBar();
-
             bar.Height = 20;
 
             if (v.Duration == 0)
@@ -144,7 +145,7 @@ namespace video_tracker_v2
             bar.HorizontalContentAlignment = HorizontalAlignment.Stretch;
             bar.HorizontalAlignment = HorizontalAlignment.Stretch;
             bar.Margin = onlyBottomMargin;
-            bar.Background = textBoxBrush;
+            bar.Background = barBackBrush;
             bar.Foreground = orangeBrush;
 
             videoPanel.Children.Add(bar);

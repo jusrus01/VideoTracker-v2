@@ -25,7 +25,7 @@ namespace video_tracker_v2
 
         private readonly int categoryWidth = 254;
         private readonly int categoryHeight = 146;
-        private readonly int fontSize = 26;
+        private readonly int fontSize = 20;
 
         public HomePage()
         {
@@ -36,7 +36,7 @@ namespace video_tracker_v2
 
             // init style values
             borderThickness = new Thickness(0);
-            textBoxBrush = new SolidColorBrush(Color.FromRgb(255, 252, 242));
+            textBoxBrush = new SolidColorBrush(Color.FromRgb(235, 232, 222));
             categoryNormalBrush = new SolidColorBrush(Color.FromRgb(64, 61, 57));
             buttonNormalBrush = new SolidColorBrush(Color.FromRgb(235, 94, 40));
             buttonActiveBrush = new SolidColorBrush(Color.FromRgb(245, 134, 80));
