@@ -204,7 +204,7 @@ namespace video_tracker_v2
 
         private void Update(object sender, MediaPlayerTimeChangedEventArgs e)
         {
-            sliderTimeline.Dispatcher.Invoke(() =>
+            sliderTimeline.Dispatcher.InvokeAsync(() =>
             {
                 if (sliderTimeline.Maximum != Convert.ToDouble(player.currentMedia.Duration / 60))
                 {

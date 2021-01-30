@@ -96,7 +96,8 @@ namespace video_tracker_v2
         {
             if (currentMedia != null)
             {
-                mPlayer.Time = ((long)time) * 60;
+                long t = ((long)time) * 60;
+                mPlayer.Time = t;
                 currentVideo.CurrentTime = Convert.ToUInt32(time);
             }
         }
