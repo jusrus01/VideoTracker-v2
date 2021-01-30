@@ -8,7 +8,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using LibVLCSharp.Shared;
 using System.Timers;
-
+using LibVLCSharp.Shared.Structures;
+// TO DO:
+//  check if you can change scroll colors and witdh
 namespace video_tracker_v2
 {
     /// <summary>
@@ -77,6 +79,8 @@ namespace video_tracker_v2
 
             // subscribe to key up event
             mainWindow.KeyUp += HandleKeyUp;
+
+
         }
 
         private void CreateVideoListings()
@@ -177,9 +181,9 @@ namespace video_tracker_v2
 
             if (!player.currentVideo.Complete)
                 curPressedButton.Background = activeVideoBrush;
+            player.mPlayer.Playing += LoadSubtitles;
 
             curProgressBar = (ProgressBar)VisualTreeHelper.GetChild(videoPanel, int.Parse(curPressedButton.DataContext.ToString()) * 2 + 1);
-
         }
 
         private void Move(object sender, RoutedEventArgs e)
@@ -406,6 +410,28 @@ namespace video_tracker_v2
                 default:
                     break;
             }
+        }
+
+        private void SelectSubtitleItem(object sender, RoutedEventArgs e)
+        {
+            MenuItem test = sender as MenuItem;
+            player.mPlayer.SetSpu(int.Parse(test.DataContext.ToString()));
+        }
+
+        private void LoadSubtitles(object sender, EventArgs e)
+        {
+            Dispatcher.InvokeAsync(() =>
+            {
+                foreach(TrackDescription t in player.mPlayer.SpuDescription)
+                {
+                    MenuItem sub = new MenuItem();
+                    sub.Header = t.Name;
+                    sub.DataContext = t.Id;
+                    sub.Click += SelectSubtitleItem;
+                    videoViewContextMenu.Items.Add(sub);
+                }
+            });
+            player.mPlayer.Playing -= LoadSubtitles;
         }
     }
 }

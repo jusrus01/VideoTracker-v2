@@ -1,5 +1,6 @@
 ﻿using System;
 using LibVLCSharp.Shared;
+using LibVLCSharp.Shared.Structures;
 
 namespace video_tracker_v2
 {
@@ -82,14 +83,12 @@ namespace video_tracker_v2
             currentVideo = video;
             currentMedia = new Media(_libVLC, new Uri(video.Path));
             mPlayer.Media = currentMedia;
-
             Play();
         }
 
         public void Play()
         {
             mPlayer.Play();
-           
         }
 
         public void SetTime(double time)
