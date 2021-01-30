@@ -180,9 +180,10 @@
             <RowDefinition Height="8*"/>
         </Grid.RowDefinitions>
 
-        <ScrollViewer  Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
-            <WrapPanel HorizontalAlignment="Stretch" Orientation="Vertical" Name="videoPanel" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="2">
-                </WrapPanel>
+        <ScrollViewer HorizontalContentAlignment="Stretch" Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Name="videoPanel" Orientation="Vertical">
+                
+            </StackPanel>
         </ScrollViewer>
 
         <Button BorderThickness="0" Grid.Column="0" FontSize="16" Foreground="#FFFCF2" Background="#eb5e28" Grid.Row="0" Click="GoToHomePage">Back</Button>

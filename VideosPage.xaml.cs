@@ -128,7 +128,6 @@ namespace video_tracker_v2
             {
                 btn.Background = videoBrush;
             }
-
             videoPanel.Children.Add(btn);
 
             ProgressBar bar = new ProgressBar();
