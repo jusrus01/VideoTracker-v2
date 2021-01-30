@@ -10,8 +10,7 @@ using LibVLCSharp.Shared;
 using System.Timers;
 using LibVLCSharp.Shared.Structures;
 using Microsoft.WindowsAPICodePack.Dialogs;
-// TO DO:
-//  check if you can change scroll colors and witdh
+
 namespace video_tracker_v2
 {
     /// <summary>
@@ -48,6 +47,8 @@ namespace video_tracker_v2
         private Thickness borderNone;
         private Thickness onlyBottomMargin;
 
+        private ContextMenu videoViewContextMenuCopy;
+
         public VideosPage(string path)
         {
             InitializeComponent();
@@ -80,8 +81,6 @@ namespace video_tracker_v2
 
             // subscribe to key up event
             mainWindow.KeyUp += HandleKeyUp;
-
-
         }
 
         private void CreateVideoListings()
@@ -428,6 +427,13 @@ namespace video_tracker_v2
         {
             Dispatcher.InvokeAsync(() =>
             {
+                // remove items from previous loaded subtitles
+                videoViewContextMenu.Items.Clear();
+                MenuItem addSub = new MenuItem();
+                addSub.Header = "Add subtitle file...";
+                addSub.Click += AddExternalSubFile;
+                videoViewContextMenu.Items.Add(addSub);
+
                 foreach(TrackDescription t in player.mPlayer.SpuDescription)
                 {
                     MenuItem sub = new MenuItem();
