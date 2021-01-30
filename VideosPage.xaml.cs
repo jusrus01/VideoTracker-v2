@@ -74,6 +74,9 @@ namespace video_tracker_v2
 
             timer = new Timer(3000);
             timer.Elapsed += HideCursor;
+
+            // subscribe to key up event
+            mainWindow.KeyUp += HandleKeyUp;
         }
 
         private void CreateVideoListings()
@@ -188,12 +191,12 @@ namespace video_tracker_v2
 
             if(value > 0) // right
             {
-                player.MoveBy(300);
+                player.MoveBy(3000);
             }
             else
             {
                 // left
-                player.MoveBy(-300);
+                player.MoveBy(-3000);
             }
         }
 
@@ -351,6 +354,57 @@ namespace video_tracker_v2
             if (Convert.ToDouble(player.mPlayer.Time / 60) != s.Value)
             {
                 player.SetTime(s.Value);
+            }
+        }
+
+        private void HandleKeyUp(object sender, KeyEventArgs e)
+        {
+            switch(e.Key)
+            {
+                case Key.Left:
+                    player.MoveBy(-3000);
+                    break;
+                
+                case Key.Right:
+                    player.MoveBy(3000);
+                    break;
+                // pause/play video
+                case Key.Space:
+                    PlayVideo(null, null);
+                    break;
+                // exit fullscreen
+                case Key.Escape:
+                    if(isFullscreen)
+                    {
+                        EnterFullscreenMode();
+                    }
+                    break;
+                // enter fullscreen
+                case Key.F:
+                    if(!isFullscreen)
+                    {
+                        EnterFullscreenMode();
+                    }
+                    break;
+
+                case Key.Add:
+                case Key.OemPlus:
+                    if (sliderVolume.Value + 10 > 100)
+                        sliderVolume.Value = 100;
+                    else
+                        sliderVolume.Value += 10;
+                    break;
+
+                case Key.Subtract:
+                case Key.OemMinus:
+                    if (sliderVolume.Value - 10 < 0)
+                        sliderVolume.Value = 0;
+                    else
+                        sliderVolume.Value -= 10;
+                    break;
+
+                default:
+                    break;
             }
         }
     }
