@@ -187,7 +187,7 @@
         </ScrollViewer>
 
         <Button BorderThickness="0" Grid.Column="0" FontSize="16" Foreground="#FFFCF2" Background="#eb5e28" Grid.Row="0" Click="GoToHomePage">Back</Button>
-        <Button BorderThickness="0" Grid.Column="1" FontSize="16" Foreground="#FFFCF2" Background="#eb5e28" Grid.Row="0">Subtitles</Button>
+        <Button BorderThickness="0" Grid.Column="1" FontSize="16" Foreground="#FFFCF2" Background="#eb5e28" Grid.Row="0" Click="ShowSubtitlesContextMenu">Subtitles</Button>
 
         <wpf:VideoView x:Name="videoView" Background="Black"
         Grid.Column="2"  HorizontalAlignment="Stretch" Width="auto" VerticalAlignment="Stretch" 
@@ -195,7 +195,7 @@
 
             <wpf:VideoView.ContextMenu>
                 <ContextMenu IsOpen="False" x:Name="videoViewContextMenu">
-                    <MenuItem Header="Add subtitle file"/>
+                    <MenuItem Click="AddExternalSubFile"  Header="Add subtitle file"/>
                 </ContextMenu>
             </wpf:VideoView.ContextMenu>
 

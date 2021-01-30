@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using LibVLCSharp.Shared;
 using System.Timers;
 using LibVLCSharp.Shared.Structures;
+using Microsoft.WindowsAPICodePack.Dialogs;
 // TO DO:
 //  check if you can change scroll colors and witdh
 namespace video_tracker_v2
@@ -277,6 +278,11 @@ namespace video_tracker_v2
             videoViewContextMenu.IsOpen = true;
         }
 
+        private void ShowSubtitlesContextMenu(object sender, RoutedEventArgs e)
+        {
+            videoViewContextMenu.IsOpen = true;
+        }
+
         private void MouseMoveE(object sender, MouseEventArgs e)
         {
             timer.Stop();
@@ -432,6 +438,21 @@ namespace video_tracker_v2
                 }
             });
             player.mPlayer.Playing -= LoadSubtitles;
+        }
+
+        private void AddExternalSubFile(object sender, EventArgs e)
+        {
+            if(player.currentMedia != null)
+            {
+                player.Pause();
+
+                CommonOpenFileDialog openDialog = new CommonOpenFileDialog();
+                if (openDialog.ShowDialog() == CommonFileDialogResult.Ok)
+                {
+                    player.AddSub(openDialog.FileName);
+                }
+                player.Play();
+            }
         }
     }
 }

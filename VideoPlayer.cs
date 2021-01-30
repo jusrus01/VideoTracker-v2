@@ -127,5 +127,10 @@ namespace video_tracker_v2
 
             mPlayer.Time += msTime;
         }
+
+        public void AddSub(string path)
+        {
+            mPlayer.AddSlave(MediaSlaveType.Subtitle, "file:///" + path, true);
+        }
     }
 }
