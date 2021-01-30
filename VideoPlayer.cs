@@ -3,10 +3,13 @@ using LibVLCSharp.Shared;
 
 namespace video_tracker_v2
 {
+    /// <summary>
+    /// Handles video playing
+    /// </summary>
     class VideoPlayer
     {
+        // not sure if some of them are video files
         public readonly static string ValidExtensions = ".asx " +
-            ".dts" +
             ".gxf" +
             ".m2v" +
             ".m3u" +
@@ -21,7 +24,6 @@ namespace video_tracker_v2
             ".a52" +
             ".acc" +
             ".b4s" +
-            ".cue" +
             ".divx" +
             ".dv" +
             ".flv" +
@@ -37,7 +39,6 @@ namespace video_tracker_v2
             ".vob" +
             ".xspf" +
             ".dat" +
-            ".bin" +
             ".ifo" +
             ".part" +
             ".3g2" +
@@ -79,7 +80,6 @@ namespace video_tracker_v2
         public void Play(Video video)
         {
             currentVideo = video;
-
             currentMedia = new Media(_libVLC, new Uri(video.Path));
             mPlayer.Media = currentMedia;
 

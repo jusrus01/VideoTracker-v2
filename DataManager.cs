@@ -12,15 +12,19 @@ namespace video_tracker_v2
     /// </summary>
     public static class DataManager
     {
-        public static string MainPath { get; set; }
-        public static string DataPath { get; set; }
+        public static string MainPath { get; set; }  // this holds created categories
+        public static string DataPath { get; set; }  // this holds specific video category data
 
+        /// <summary>
+        /// Opens file and reads paths to video folders
+        /// </summary>
+        /// <returns>Array of valid paths to video folders</returns>
         public static string[] LoadCategories()
         {
             if (File.Exists(MainPath))
             {
                 string[] categories = File.ReadAllLines(MainPath);
-                // check if files exists
+                // check if directory with video exists
                 List<string> validCategories = new List<string>();
                 foreach(string category in categories)
                 {
@@ -29,6 +33,7 @@ namespace video_tracker_v2
                         validCategories.Add(category);
                     }
                 }
+
                 if (validCategories.Count == 0)
                     return null;
 
@@ -37,6 +42,11 @@ namespace video_tracker_v2
             return null;
         }
         
+        /// <summary>
+        /// Loads all videos from video directory
+        /// </summary>
+        /// <param name="categoryName">Name of videos folder</param>
+        /// <returns>Loaded videos</returns>
         public static List<Video> LoadVideos(string categoryName)
         {
             // if file doesn't exists
@@ -87,11 +97,20 @@ namespace video_tracker_v2
             return videos;
         }
 
+        /// <summary>
+        /// Open file and write new path entry
+        /// </summary>
+        /// <param name="categoryPath">Path to videos directory</param>
         public static void SaveCategory(string categoryPath)
         {
             File.AppendAllText(MainPath, categoryPath + '\n');
         }
 
+        /// <summary>
+        /// Checks if path entry already exists in data file
+        /// </summary>
+        /// <param name="entry">Path to videos directory</param>
+        /// <returns>True if exists, false otherwise</returns>
         public static bool EntryExists(string entry)
         {
             if (!File.Exists(MainPath))
@@ -104,6 +123,11 @@ namespace video_tracker_v2
             return false;
         }
 
+        /// <summary>
+        /// Removes path entry from data file and removes
+        /// folder which contains specific videos data
+        /// </summary>
+        /// <param name="path">Path to videos directory</param>
         public static void RemoveCategoryFromFile(string path)
         {
             // also remove file from data folder if exists
@@ -118,6 +142,7 @@ namespace video_tracker_v2
                     break;
                 }
             }
+
             lines = lines.Where(w => w != lines[i]).ToArray();
 
             File.WriteAllLines(MainPath, lines);
@@ -129,6 +154,9 @@ namespace video_tracker_v2
             }
         }
 
+        /// <summary>
+        /// Creates videos data folder, if it doesn't exist
+        /// </summary>
         public static void CreateDataFolder()
         {
             //DataPath = Path.GetDirectoryName(MainPath) + "\\videodata";
@@ -139,7 +167,13 @@ namespace video_tracker_v2
                 Directory.CreateDirectory(DataPath);
             }
         }
-
+        
+        /// <summary>
+        /// Updates specific video file data in
+        /// selected videos category
+        /// </summary>
+        /// <param name="categoryName">Name of videos directory folder</param>
+        /// <param name="video">Video data</param>
         public static void UpdateVideoData(string categoryName, Video video)
         {
             if (video == null)

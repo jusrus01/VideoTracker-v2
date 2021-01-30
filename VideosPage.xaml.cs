@@ -9,11 +9,6 @@ using System.Windows.Media.Imaging;
 using LibVLCSharp.Shared;
 using System.Timers;
 
-// TO DO:
-// fix player layout
-// fix player buttons
-// add better colors
-
 namespace video_tracker_v2
 {
     /// <summary>

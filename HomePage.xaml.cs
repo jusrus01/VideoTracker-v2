@@ -14,7 +14,7 @@ namespace video_tracker_v2
         private string[] categories;
         private bool deleting = false;
 
-        // dynamic elements style values
+        // style values for dynamic button creation
         private Thickness borderThickness;
         private Thickness margin;
         private SolidColorBrush textBoxBrush;
@@ -46,6 +46,10 @@ namespace video_tracker_v2
             CreateCategories();
         }
 
+        /// <summary>
+        /// Create buttons for each path saved in
+        /// data file
+        /// </summary>
         private void CreateCategories()
         {
             categories = DataManager.LoadCategories();
@@ -59,6 +63,11 @@ namespace video_tracker_v2
             }
         }
 
+        /// <summary>
+        /// Create button with associated path
+        /// to video directory
+        /// </summary>
+        /// <param name="path">Path to video directory</param>
         private void CreateButton(string path)
         {
             TextBox textBox = new TextBox();
@@ -89,6 +98,11 @@ namespace video_tracker_v2
             panelCategories.Children.Add(btn);
         }
 
+        /// <summary>
+        /// Handles page transition with button click
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event data</param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (deleting)
@@ -106,6 +120,12 @@ namespace video_tracker_v2
             }
         }
 
+        /// <summary>
+        /// Sets state to deletion
+        /// and changes button color
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event data</param>
         private void ToogleRemove(object sender, RoutedEventArgs e)
         {
             if (deleting)
@@ -120,6 +140,12 @@ namespace video_tracker_v2
             }
         }
 
+        /// <summary>
+        /// Opens file dialog and allows user to
+        /// select path to videos directory
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event data</param>
         private void AddCategory(object sender, RoutedEventArgs e)
         {
             if(deleting)
