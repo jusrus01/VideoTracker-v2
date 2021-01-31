@@ -186,8 +186,12 @@
             </StackPanel>
         </ScrollViewer>
 
-        <Button BorderThickness="0" Grid.Column="0" FontSize="16" Foreground="#FFFCF2" Background="#eb5e28" Grid.Row="0" Click="GoToHomePage">Back</Button>
-        <Button BorderThickness="0" Grid.Column="1" FontSize="16" Foreground="#FFFCF2" Background="#eb5e28" Grid.Row="0" Click="ShowSubtitlesContextMenu">Subtitles</Button>
+        <Button BorderThickness="0" Grid.Column="0" FontSize="16" Foreground="#F7E4D5" Background="#eb5e28" Grid.Row="0" Click="GoToHomePage">
+            <TextBlock Background="Transparent" HorizontalAlignment="Center" Foreground="#EBE8DE">Back</TextBlock>
+        </Button>
+        <Button BorderThickness="0" Grid.Column="1" FontSize="16" Foreground="#EBE8DE" Background="#eb5e28" Grid.Row="0" Click="ShowSubtitlesContextMenu">
+            <TextBlock Background="Transparent" HorizontalAlignment="Center" Foreground="#EBE8DE">Subtitles</TextBlock>
+        </Button>
 
         <wpf:VideoView x:Name="videoView" Background="Black"
         Grid.Column="2"  HorizontalAlignment="Stretch" Width="auto" VerticalAlignment="Stretch" 

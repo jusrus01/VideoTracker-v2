@@ -30,7 +30,11 @@
         </ScrollViewer>
         
         <Rectangle Grid.Column="1" Grid.ColumnSpan="2" Fill="#eb5e28" Stretch="Fill"></Rectangle>
-        <Button Click="AddCategory" Grid.Row="0" BorderThickness="0" Grid.Column="0" FontSize="32" Background="#eb5e28" Foreground="#FFFCF2">+</Button>
-        <Button Name="btnRemove" Click="ToogleRemove" Grid.Row="0" BorderThickness="0" Grid.Column="1" FontSize="32" Background="#eb5e28" Foreground="#FFFCF2">-</Button>
+        <Button Click="AddCategory" Grid.Row="0" BorderThickness="0" Grid.Column="0" FontSize="32" Background="#eb5e28" Foreground="#FFFCF2">
+            <TextBlock Background="Transparent" HorizontalAlignment="Center" Foreground="#EBE8DE">+</TextBlock>
+        </Button>
+        <Button Name="btnRemove" Click="ToogleRemove" Grid.Row="0" BorderThickness="0" Grid.Column="1" FontSize="32" Background="#eb5e28" Foreground="#FFFCF2">
+            <TextBlock Background="Transparent" HorizontalAlignment="Center" Foreground="#EBE8DE">-</TextBlock>
+        </Button>
     </Grid>
 </Page>
