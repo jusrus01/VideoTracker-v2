@@ -36,6 +36,7 @@ namespace video_tracker_v2
         private SolidColorBrush videoBrush;
         private SolidColorBrush activeVideoBrush;
         private SolidColorBrush textBoxBrush;
+        private SolidColorBrush textBoxCompletedBrush;
         private SolidColorBrush orangeBrush;
         private SolidColorBrush barBackBrush;
 
@@ -56,6 +57,7 @@ namespace video_tracker_v2
             // init style values
             videoCompletedBrush = new SolidColorBrush(Color.FromRgb(235, 94, 40));
             textBoxBrush = new SolidColorBrush(Color.FromRgb(235, 232, 222));
+            textBoxCompletedBrush = new SolidColorBrush(Color.FromRgb(255, 215, 162));
             videoBrush = new SolidColorBrush(Color.FromRgb(64, 61, 57));
             orangeBrush = new SolidColorBrush(Color.FromRgb(235, 94, 40));
             activeVideoBrush = new SolidColorBrush(Color.FromRgb(104, 101, 97));
@@ -94,6 +96,7 @@ namespace video_tracker_v2
         private void OnVideoComplete()
         {
             curPressedButton.Background = videoCompletedBrush;
+            ((TextBox)curPressedButton.Content).Foreground = textBoxCompletedBrush;
         }
 
         private void CreateButton(Video v, int id)
@@ -123,6 +126,7 @@ namespace video_tracker_v2
             if(v.Complete)
             {
                 btn.Background = videoCompletedBrush;
+                textBox.Foreground = textBoxCompletedBrush;
             }
             else
             {
