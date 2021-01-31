@@ -119,13 +119,20 @@ namespace video_tracker_v2
 
         public void MoveBy(int msTime)
         {
-            if(msTime < 0 && mPlayer.Time - msTime < 0)
+            // sometimes crashes, even though media is loaded
+            try
             {
-                mPlayer.Time = 0;
-                return;
-            }
+                    if (msTime < 0 && mPlayer.Time - msTime < 0 && mPlayer.Media != null)
+                    {
+                        mPlayer.Time = 0;
+                        return;
+                    }
 
-            mPlayer.Time += msTime;
+                    mPlayer.Time += msTime;
+            }
+            catch(AccessViolationException e)
+            {
+            }
         }
 
         public void AddSub(string path)

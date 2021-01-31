@@ -80,7 +80,8 @@ namespace video_tracker_v2
             timer.Elapsed += HideCursor;
 
             // subscribe to key up event
-            mainWindow.KeyUp += HandleKeyUp;
+            EventManager.RegisterClassHandler(typeof(Window),
+                Keyboard.PreviewKeyUpEvent, new KeyEventHandler(HandleKeyUp), true);
         }
 
         private void CreateVideoListings()
