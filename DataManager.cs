@@ -176,7 +176,7 @@ namespace video_tracker_v2
         /// <param name="video">Video data</param>
         public static void UpdateVideoData(string categoryName, Video video)
         {
-            if (video == null)
+            if (video == null || !File.Exists(DataPath))
                 return;
 
             string dataFile = DataPath + '\\' + categoryName;
