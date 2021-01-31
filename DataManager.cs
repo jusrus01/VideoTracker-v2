@@ -176,11 +176,21 @@ namespace video_tracker_v2
         /// <param name="video">Video data</param>
         public static void UpdateVideoData(string categoryName, Video video)
         {
-            if (video == null || !File.Exists(DataPath))
+            if (video == null)
                 return;
 
             string dataFile = DataPath + '\\' + categoryName;
-            string[] lines = File.ReadAllLines(dataFile);
+            string[] lines;
+
+            try
+            {
+                lines = File.ReadAllLines(dataFile);
+            }
+            catch
+            {
+                return;
+            }
+
             int i;
             string[] values;
 
