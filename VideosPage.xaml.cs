@@ -47,8 +47,6 @@ namespace video_tracker_v2
         private Thickness borderNone;
         private Thickness onlyBottomMargin;
 
-        private ContextMenu videoViewContextMenuCopy;
-
         public VideosPage(string path)
         {
             InitializeComponent();
