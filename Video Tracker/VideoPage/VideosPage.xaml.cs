@@ -65,8 +65,8 @@ namespace video_tracker_v2
             borderNone = new Thickness(0);
             onlyBottomMargin = new Thickness(0, 0, 0, 5);
 
-            playImageBrush = new ImageBrush(new BitmapImage(new Uri(@"..\..\Resources\play-button.png", UriKind.Relative)));
-            pauseImageBrush = new ImageBrush(new BitmapImage(new Uri(@"..\..\Resources\pause-button.png", UriKind.Relative)));
+            playImageBrush = new ImageBrush(new BitmapImage(new Uri(@"..\..\Video Tracker\Resources\play-button.png", UriKind.Relative)));
+            pauseImageBrush = new ImageBrush(new BitmapImage(new Uri(@"..\..\Video Tracker\Resources\pause-button.png", UriKind.Relative)));
 
             videos = DataManager.LoadVideos(categoryName);
 

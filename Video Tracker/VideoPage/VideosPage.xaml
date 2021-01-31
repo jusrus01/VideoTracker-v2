@@ -50,14 +50,14 @@
             <Setter Property="Template" Value="{StaticResource ButtonHighlight}"/>
             <Setter Property="Background">
                 <Setter.Value>
-                    <ImageBrush ImageSource="Resources/play-button.png"/>
+                    <ImageBrush ImageSource="../Resources/play-button.png"/>
                 </Setter.Value>
             </Setter>
         </Style>
         <Style x:Key="LeftArrowButtonStyle" TargetType="Button">
             <Setter Property="Background">
                 <Setter.Value>
-                    <ImageBrush ImageSource="Resources/left-arrow.png"/>
+                    <ImageBrush ImageSource="../Resources/left-arrow.png"/>
                 </Setter.Value>
             </Setter>
             <Setter Property="Width" Value="25"/>
@@ -70,7 +70,7 @@
         <Style x:Key="RightArrowButtonStyle" TargetType="Button">
             <Setter Property="Background">
                 <Setter.Value>
-                    <ImageBrush ImageSource="Resources/right-arrow.png"/>
+                    <ImageBrush ImageSource="../Resources/right-arrow.png"/>
                 </Setter.Value>
             </Setter>
             <Setter Property="Width" Value="25"/>
@@ -83,7 +83,7 @@
         <Style x:Key="SpeakerButtonStyle" TargetType="Button">
             <Setter Property="Background">
                 <Setter.Value>
-                    <ImageBrush ImageSource="Resources/speaker.png"/>
+                    <ImageBrush ImageSource="../Resources/speaker.png"/>
                 </Setter.Value>
             </Setter>
             <Setter Property="Width" Value="25"/>
