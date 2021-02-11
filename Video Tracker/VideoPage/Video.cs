@@ -59,5 +59,15 @@
             return string.Format("{0};{1};{2};{3}",
                 Path, CurrentTime, Duration, Complete);
         }
+
+        public override int GetHashCode()
+        {
+            return Path.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Path.GetHashCode() == obj.GetHashCode();
+        }
     }
 }
