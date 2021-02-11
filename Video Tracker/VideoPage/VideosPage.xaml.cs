@@ -159,7 +159,9 @@ namespace video_tracker_v2
         {
             if (player.currentVideo != null)
             {
-                DataManager.UpdateVideoData(categoryName, player.currentVideo);
+                //DataManager.UpdateVideoData(categoryName, player.currentVideo);
+                // save everything on exit
+                DataManager.UpdateVideosData(categoryName, videos);
             }
         }
 
@@ -167,7 +169,6 @@ namespace video_tracker_v2
         {
             if(player.currentVideo != null)
             {
-                SaveVideoData(null, null);
                 player.currentVideo.Completed -= OnVideoComplete;
             }
 
@@ -220,13 +221,12 @@ namespace video_tracker_v2
 
         private void GoToHomePage(object sender, RoutedEventArgs e)
         {
-            // save current video data, if it was loaded
-            if (player.mPlayer != null)
-                DataManager.UpdateVideoData(categoryName, player.GetVideo());
-
             player.Pause();
             player.Dispose();
             mainWindow.Title = "Video Tracker - Home";
+
+            DataManager.UpdateVideosData(categoryName, videos);
+
             NavigationService.GoBack();
         }
 

@@ -168,42 +168,19 @@ namespace video_tracker_v2
             }
         }
         
-        /// <summary>
-        /// Updates specific video file data in
-        /// selected videos category
-        /// </summary>
-        /// <param name="categoryName">Name of videos directory folder</param>
-        /// <param name="video">Video data</param>
-        public static void UpdateVideoData(string categoryName, Video video)
+        public static void UpdateVideosData(string categoryName, List<Video> videos)
         {
-            if (video == null)
+            if (videos == null)
                 return;
 
             string dataFile = DataPath + '\\' + categoryName;
-            string[] lines;
-
-            try
+            using (StreamWriter writer = new StreamWriter(dataFile))
             {
-                lines = File.ReadAllLines(dataFile);
-            }
-            catch
-            {
-                return;
-            }
-
-            int i;
-            string[] values;
-
-            for (i = 0; i < lines.Length; i++)
-            {
-                values = lines[i].Split(';');
-                if (values[0].Equals(video.Path))
+                foreach(Video v in videos)
                 {
-                    lines[i] = video.ToString();
-                    break;
+                    writer.WriteLine(v.ToString());
                 }
             }
-            File.WriteAllLines(dataFile, lines);
         }
     }
 }
