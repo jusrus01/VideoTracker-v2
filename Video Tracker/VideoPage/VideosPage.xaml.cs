@@ -10,6 +10,7 @@ using LibVLCSharp.Shared;
 using System.Timers;
 using LibVLCSharp.Shared.Structures;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using System.Threading.Tasks;
 
 namespace video_tracker_v2
 {
@@ -159,7 +160,6 @@ namespace video_tracker_v2
         {
             if (player.currentVideo != null)
             {
-                //DataManager.UpdateVideoData(categoryName, player.currentVideo);
                 // save everything on exit
                 DataManager.UpdateVideosData(categoryName, videos);
             }
@@ -319,6 +319,7 @@ namespace video_tracker_v2
 
         private void EnterFullscreenMode()
         {
+            player.Pause();
             if (!isFullscreen)
             {
                 mainWindow.WindowStyle = WindowStyle.None;
@@ -343,6 +344,8 @@ namespace video_tracker_v2
 
                 isFullscreen = false;
             }
+            // this seems to decrease chance of app crash
+            Task.Delay(1000).ContinueWith(t => player.Play());
         }
 
         private void PlayVideo(object sender, RoutedEventArgs e)

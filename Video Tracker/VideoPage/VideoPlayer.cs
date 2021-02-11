@@ -1,6 +1,5 @@
 ﻿using System;
 using LibVLCSharp.Shared;
-using LibVLCSharp.Shared.Structures;
 
 namespace video_tracker_v2
 {
