@@ -1,4 +1,4 @@
-# Video Tracker v2
+# Video Tracker
 Remake of another video tracker program I've made. I used LibVLCSharp and WPF a UI framework that creates desktop client applications.
 ## Description
 This program is designed to help keep track of videos watched within a specified folder. For example, if you have downloaded a whole season of some kind of TV show, this program would keep track of video state (watched already or not) and where you ended watching the video.
