@@ -14,18 +14,6 @@ namespace video_tracker_v2
         private string[] categories;
         private bool deleting = false;
 
-        // style values for dynamic button creation
-        private Thickness borderThickness;
-        private Thickness margin;
-        private SolidColorBrush textBoxBrush;
-        private SolidColorBrush categoryNormalBrush;
-        private SolidColorBrush buttonNormalBrush;
-        private SolidColorBrush buttonActiveBrush;
-        private SolidColorBrush borderBrush;
-
-        private readonly int categoryWidth = 254;
-        private readonly int categoryHeight = 146;
-        private readonly int fontSize = 20;
 
         public HomePage()
         {
@@ -33,15 +21,6 @@ namespace video_tracker_v2
 
             DataManager.MainPath = "categories.data";
             DataManager.CreateDataFolder();
-
-            // init style values
-            borderThickness = new Thickness(0);
-            textBoxBrush = new SolidColorBrush(Color.FromRgb(235, 232, 222));
-            categoryNormalBrush = new SolidColorBrush(Color.FromRgb(64, 61, 57));
-            buttonNormalBrush = new SolidColorBrush(Color.FromRgb(235, 94, 40));
-            buttonActiveBrush = new SolidColorBrush(Color.FromRgb(245, 134, 80));
-            borderBrush = new SolidColorBrush(Color.FromRgb(37, 36, 34));
-            margin = new Thickness(5, 10, 5, 0);
 
             CreateCategories();
         }
@@ -59,43 +38,23 @@ namespace video_tracker_v2
 
             foreach (string path in categories)
             {
-                CreateButton(path);
+                AddButton(path);
             }
         }
 
-        /// <summary>
-        /// Create button with associated path
-        /// to video directory
-        /// </summary>
-        /// <param name="path">Path to video directory</param>
-        private void CreateButton(string path)
+        private void AddButton(string directoryPath)
         {
-            TextBox textBox = new TextBox();
+            string buttonText = System.IO.Path.GetFileName(directoryPath);
+            Button button = UI.CreateButton(buttonText);
 
-            textBox.Text = System.IO.Path.GetFileName(path);
-            textBox.TextWrapping = TextWrapping.Wrap;
-            textBox.HorizontalContentAlignment = HorizontalAlignment.Center;
-            textBox.FontSize = fontSize;
-            textBox.Focusable = false;
-            textBox.Background = Brushes.Transparent;
-            textBox.BorderThickness = borderThickness;
-            textBox.Cursor = Cursors.Arrow;
-            textBox.Foreground = textBoxBrush;
+            // bind button to event
+            button.Click += Button_Click;
 
-            Button btn = new Button();
+            // add directory path to button
+            button.DataContext = directoryPath;
 
-            btn.Click += Button_Click;
-            btn.DataContext = path;
-            btn.Width = categoryWidth;
-            btn.Height = categoryHeight;
-            btn.Background = categoryNormalBrush;
-            btn.VerticalContentAlignment = VerticalAlignment.Center;
-            btn.HorizontalAlignment = HorizontalAlignment.Center;
-            btn.BorderBrush = borderBrush;
-            btn.Content = textBox;
-            btn.Margin = margin;
-
-            panelCategories.Children.Add(btn);
+            // add button to panel
+            panelCategories.Children.Add(button);
         }
 
         /// <summary>
@@ -130,13 +89,13 @@ namespace video_tracker_v2
         {
             if (deleting)
             {
-                btnRemove.Background = buttonNormalBrush;
+                btnRemove.Background = UI.buttonNormalBrush;
                 deleting = false;
             }
             else
             {
                 deleting = true;
-                btnRemove.Background = buttonActiveBrush;
+                btnRemove.Background = UI.buttonActiveBrush;
             }
         }
 
@@ -159,7 +118,7 @@ namespace video_tracker_v2
                 // check to see if it already exists
                 if (!DataManager.EntryExists(openDialog.FileName))
                 {
-                    CreateButton(openDialog.FileName);
+                    AddButton(openDialog.FileName);
                     DataManager.SaveCategory(openDialog.FileName);
                 }
             }

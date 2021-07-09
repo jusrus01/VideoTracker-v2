@@ -126,6 +126,7 @@
     <Compile Include="Video Tracker\HomePage\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Video Tracker\HomePage\UI.cs" />
     <Compile Include="Video Tracker\VideoPage\Video.cs" />
     <Compile Include="Video Tracker\VideoPage\VideoPlayer.cs" />
     <Compile Include="Video Tracker\VideoPage\VideosPage.xaml.cs">
