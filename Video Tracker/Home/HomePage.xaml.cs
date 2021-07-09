@@ -11,15 +11,18 @@ namespace video_tracker_v2
     /// </summary>
     public partial class HomePage : Page
     {
+        private readonly string _infoFolderPath = "categories.data";
+
         public HomePage()
         {
             InitializeComponent();
 
             // add false flag to remove button
+            // so we can use it to check if we're
+            // deleting categories or not
             btnRemove.DataContext = false;
 
-            DataManager.MainPath = "categories.data";
-            DataManager.CreateDataFolder();
+            DataManager.Initialize(_infoFolderPath);
 
             CreateCategories();
         }
@@ -87,16 +90,6 @@ namespace video_tracker_v2
         /// <param name="e">Event data</param>
         private void ToogleRemove(object sender, RoutedEventArgs e)
         {
-            //if (deleting)
-            //{
-            //    btnRemove.Background = UI.ButtonNormalBrush;
-            //    deleting = false;
-            //}
-            //else
-            //{
-            //    deleting = true;
-            //    btnRemove.Background = UI.ButtonActiveBrush;
-            //}
             if((bool)btnRemove.DataContext)
             {
                 btnRemove.Background = UI.ButtonNormalBrush;

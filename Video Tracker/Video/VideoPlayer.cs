@@ -129,7 +129,7 @@ namespace video_tracker_v2
 
                     mPlayer.Time += msTime;
             }
-            catch(AccessViolationException e)
+            catch
             {
             }
         }

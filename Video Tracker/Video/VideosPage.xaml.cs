@@ -20,7 +20,7 @@ namespace video_tracker_v2
     public partial class VideosPage : Page
     {
         private string categoryName;
-        private string path;
+        private string currentCategoryPath;
 
         private Window mainWindow;
         private bool isFullscreen = false;
@@ -53,7 +53,7 @@ namespace video_tracker_v2
         {
             InitializeComponent();
 
-            this.path = path;
+            currentCategoryPath = path;
             categoryName = System.IO.Path.GetFileName(path);
             // init style values
             videoCompletedBrush = new SolidColorBrush(Color.FromRgb(235, 94, 40));

@@ -12,8 +12,8 @@ namespace video_tracker_v2
     /// </summary>
     public static class DataManager
     {
-        public static string MainPath { get; set; }  // this holds created categories
-        public static string DataPath { get; set; }  // this holds specific video category data
+        private static string mainPath { get; set; }  // this holds created categories
+        private static string dataPath { get; set; }  // this holds specific video category data
 
         /// <summary>
         /// Opens file and reads paths to video folders
@@ -21,9 +21,9 @@ namespace video_tracker_v2
         /// <returns>Array of valid paths to video folders</returns>
         public static string[] LoadCategories()
         {
-            if (File.Exists(MainPath))
+            if (File.Exists(mainPath))
             {
-                string[] categories = File.ReadAllLines(MainPath);
+                string[] categories = File.ReadAllLines(mainPath);
                 // check if directory with video exists
                 List<string> validCategories = new List<string>();
                 foreach(string category in categories)
@@ -53,7 +53,7 @@ namespace video_tracker_v2
             // create file
             // and return all videos with data
             List<Video> videos = new List<Video>();
-            string dataFile = DataPath + '\\' + categoryName;
+            string dataFile = dataPath + '\\' + categoryName;
 
             if (File.Exists(dataFile))
             {
@@ -103,7 +103,7 @@ namespace video_tracker_v2
         /// <param name="categoryPath">Path to videos directory</param>
         public static void SaveCategory(string categoryPath)
         {
-            File.AppendAllText(MainPath, categoryPath + '\n');
+            File.AppendAllText(mainPath, categoryPath + '\n');
         }
 
         /// <summary>
@@ -113,10 +113,10 @@ namespace video_tracker_v2
         /// <returns>True if exists, false otherwise</returns>
         public static bool EntryExists(string entry)
         {
-            if (!File.Exists(MainPath))
+            if (!File.Exists(mainPath))
                 return false;
 
-            string[] values = File.ReadAllLines(MainPath);
+            string[] values = File.ReadAllLines(mainPath);
 
             if (values.Contains(entry))
                 return true;
@@ -131,7 +131,7 @@ namespace video_tracker_v2
         public static void RemoveCategoryFromFile(string path)
         {
             // also remove file from data folder if exists
-            string[] lines = File.ReadAllLines(MainPath);
+            string[] lines = File.ReadAllLines(mainPath);
             int i;
             string[] values;
             for (i = 0; i < lines.Length; i++)
@@ -145,8 +145,8 @@ namespace video_tracker_v2
 
             lines = lines.Where(w => w != lines[i]).ToArray();
 
-            File.WriteAllLines(MainPath, lines);
-            string dataFile = DataPath + '\\' + Path.GetFileName(path);
+            File.WriteAllLines(mainPath, lines);
+            string dataFile = dataPath + '\\' + Path.GetFileName(path);
 
             if (File.Exists(dataFile))
             {
@@ -157,14 +157,15 @@ namespace video_tracker_v2
         /// <summary>
         /// Creates videos data folder, if it doesn't exist
         /// </summary>
-        public static void CreateDataFolder()
+        public static void Initialize(string infoFolderPath)
         {
             //DataPath = Path.GetDirectoryName(MainPath) + "\\videodata";
-            DataPath = "videodata";
+            mainPath = infoFolderPath;
+            dataPath = "videodata";
             // check if it already exists
-            if(!Directory.Exists(DataPath))
+            if(!Directory.Exists(dataPath))
             {
-                Directory.CreateDirectory(DataPath);
+                Directory.CreateDirectory(dataPath);
             }
         }
         
@@ -173,7 +174,7 @@ namespace video_tracker_v2
             if (videos == null)
                 return;
 
-            string dataFile = DataPath + '\\' + categoryName;
+            string dataFile = dataPath + '\\' + categoryName;
             using (StreamWriter writer = new StreamWriter(dataFile))
             {
                 foreach(Video v in videos)
