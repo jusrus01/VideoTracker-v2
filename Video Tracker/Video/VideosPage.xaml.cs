@@ -33,41 +33,11 @@ namespace video_tracker_v2
         private Button curPressedButton;
         private ProgressBar curProgressBar;
 
-        private SolidColorBrush videoCompletedBrush;
-        private SolidColorBrush videoBrush;
-        private SolidColorBrush activeVideoBrush;
-        private SolidColorBrush textBoxBrush;
-        private SolidColorBrush textBoxCompletedBrush;
-        private SolidColorBrush orangeBrush;
-        private SolidColorBrush barBackBrush;
-
-        private ImageBrush playImageBrush;
-        private ImageBrush pauseImageBrush;
-
-        private int fontSize = 12;
-
-        private Thickness borderNone;
-        private Thickness onlyBottomMargin;
-
         public VideosPage(string path)
         {
             InitializeComponent();
-
             currentCategoryPath = path;
             categoryName = System.IO.Path.GetFileName(path);
-            // init style values
-            videoCompletedBrush = new SolidColorBrush(Color.FromRgb(235, 94, 40));
-            textBoxBrush = new SolidColorBrush(Color.FromRgb(235, 232, 222));
-            textBoxCompletedBrush = new SolidColorBrush(Color.FromRgb(255, 215, 162));
-            videoBrush = new SolidColorBrush(Color.FromRgb(64, 61, 57));
-            orangeBrush = new SolidColorBrush(Color.FromRgb(235, 94, 40));
-            activeVideoBrush = new SolidColorBrush(Color.FromRgb(104, 101, 97));
-            barBackBrush = new SolidColorBrush(Color.FromRgb(44, 41, 37));
-            borderNone = new Thickness(0);
-            onlyBottomMargin = new Thickness(0, 0, 0, 5);
-
-            playImageBrush = new ImageBrush(new BitmapImage(new Uri(@"..\..\Video Tracker\Resources\play-button.png", UriKind.Relative)));
-            pauseImageBrush = new ImageBrush(new BitmapImage(new Uri(@"..\..\Video Tracker\Resources\pause-button.png", UriKind.Relative)));
 
             videos = DataManager.LoadVideos(categoryName);
 
@@ -87,71 +57,30 @@ namespace video_tracker_v2
 
         private void CreateVideoListings()
         {
-            int count = 0;
-            foreach(Video v in videos)
+            for(int i = 0; i < videos.Count; i++)
             {
-                CreateButton(v, count);
-                count++;
+                AddButton(videos[i], i);
+                AddProgressBar(videos[i], i);
             }
         }
 
         private void OnVideoComplete()
         {
-            curPressedButton.Background = videoCompletedBrush;
-            ((TextBox)curPressedButton.Content).Foreground = textBoxCompletedBrush;
+            curPressedButton.Background = UI.VideoCompletedBrush;
+            ((TextBox)curPressedButton.Content).Foreground = UI.TextBoxCompletedBrush;
         }
 
-        private void CreateButton(Video v, int id)
+        private void AddButton(Video v, int id)
         {
-            TextBox textBox = new TextBox();
+            Button button = UI.CreateButton(v, id);
+            button.Click += LoadNewVideo;
 
-            textBox.Text = System.IO.Path.GetFileNameWithoutExtension(v.Path);
-            textBox.TextWrapping = TextWrapping.Wrap;
-            textBox.HorizontalAlignment = HorizontalAlignment.Left;
-            textBox.HorizontalContentAlignment = HorizontalAlignment.Left;
-            textBox.FontSize = fontSize;
-            textBox.Focusable = false;
-            textBox.Background = Brushes.Transparent;
-            textBox.BorderThickness = borderNone;
-            textBox.Cursor = Cursors.Arrow;
-            textBox.Foreground = textBoxBrush;
+            videoPanel.Children.Add(button);
+        }
 
-            Button btn = new Button();
-            btn.Content = textBox;
-            btn.Click += LoadNewVideo;
-            btn.DataContext = id.ToString();
-            btn.HorizontalAlignment = HorizontalAlignment.Stretch;
-            btn.HorizontalContentAlignment = HorizontalAlignment.Stretch;
-            btn.Height = 50;
-            btn.BorderThickness = borderNone;
-
-            if(v.Complete)
-            {
-                btn.Background = videoCompletedBrush;
-                textBox.Foreground = textBoxCompletedBrush;
-            }
-            else
-            {
-                btn.Background = videoBrush;
-            }
-            videoPanel.Children.Add(btn);
-
-            ProgressBar bar = new ProgressBar();
-            bar.Height = 20;
-
-            if (v.Duration == 0)
-                bar.Maximum = 100;
-            else
-                bar.Maximum = v.Duration;
-
-            bar.Value = v.CurrentTime;
-            bar.BorderThickness = borderNone;
-            bar.DataContext = id.ToString();
-            bar.HorizontalContentAlignment = HorizontalAlignment.Stretch;
-            bar.HorizontalAlignment = HorizontalAlignment.Stretch;
-            bar.Margin = onlyBottomMargin;
-            bar.Background = barBackBrush;
-            bar.Foreground = orangeBrush;
+        private void AddProgressBar(Video v, int id)
+        {
+            ProgressBar bar = UI.CreateProgressBar(v, id);
 
             videoPanel.Children.Add(bar);
         }
@@ -173,18 +102,18 @@ namespace video_tracker_v2
             }
 
             if (curPressedButton != null && !player.currentVideo.Complete)
-                curPressedButton.Background = videoBrush;
+                curPressedButton.Background = UI.VideoBrush;
 
             player.Play(videos.ElementAt(int.Parse((sender as Button).DataContext.ToString())));
 
-            btnPlay.Background = pauseImageBrush;
+            btnPlay.Background = UI.PauseImageBrush;
 
             curPressedButton = (sender as Button);
             player.currentVideo.Completed += OnVideoComplete;
             player.SetTime(player.currentVideo.CurrentTime);
 
             if (!player.currentVideo.Complete)
-                curPressedButton.Background = activeVideoBrush;
+                curPressedButton.Background = UI.ActiveVideoBrush;
             player.mPlayer.Playing += LoadSubtitles;
 
             curProgressBar = (ProgressBar)VisualTreeHelper.GetChild(videoPanel, int.Parse(curPressedButton.DataContext.ToString()) * 2 + 1);
@@ -353,12 +282,12 @@ namespace video_tracker_v2
             if(player.mPlayer.IsPlaying)
             {
                 player.Pause();
-                btnPlay.Background = playImageBrush;
+                btnPlay.Background = UI.PlayImageBrush;
             }
             else
             {
                 player.Play();
-                btnPlay.Background = pauseImageBrush;
+                btnPlay.Background = UI.PauseImageBrush;
             }
         }
 
