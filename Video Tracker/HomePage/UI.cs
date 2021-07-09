@@ -2,23 +2,35 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace video_tracker_v2
 {
     public static class UI
     {
-        // style values for dynamic button creation
-        private static Thickness borderThickness = new Thickness(0);
-        private static Thickness margin = new Thickness(5, 10, 5, 0);
-        private static SolidColorBrush textBoxBrush = new SolidColorBrush(Color.FromRgb(235, 232, 222));
-        private static SolidColorBrush categoryNormalBrush = new SolidColorBrush(Color.FromRgb(64, 61, 57));
-        public static SolidColorBrush buttonNormalBrush = new SolidColorBrush(Color.FromRgb(235, 94, 40));
-        public static SolidColorBrush buttonActiveBrush = new SolidColorBrush(Color.FromRgb(245, 134, 80));
-        private static SolidColorBrush borderBrush = new SolidColorBrush(Color.FromRgb(37, 36, 34));
-        private static readonly int categoryWidth = 254;
-        private static readonly int categoryHeight = 146;
-        private static readonly int fontSize = 20;
+        public static Thickness BorderThickness { get; private set; }
+        public static Thickness Margin { get; private set; }
+        public static SolidColorBrush TextBoxBrush { get; private set; }
+        public static SolidColorBrush CategoryNormalBrush { get; private set; }
+        public static SolidColorBrush ButtonNormalBrush { get; private set; }
+        public static SolidColorBrush ButtonActiveBrush { get; private set; }
+        public static SolidColorBrush BorderBrush { get; private set; }
+        public static int CategoryWidth { get; private set; }
+        public static int CategoryHeight { get; private set; }
+        public static int FontSize { get; private set; }
+
+        static UI()
+        {
+            BorderThickness = new Thickness(0);
+            Margin = new Thickness(5, 10, 5, 0);
+            TextBoxBrush = new SolidColorBrush(Color.FromRgb(235, 232, 222));
+            CategoryNormalBrush = new SolidColorBrush(Color.FromRgb(64, 61, 57));
+            ButtonNormalBrush = new SolidColorBrush(Color.FromRgb(235, 94, 40));
+            ButtonActiveBrush = new SolidColorBrush(Color.FromRgb(245, 134, 80));
+            BorderBrush = new SolidColorBrush(Color.FromRgb(37, 36, 34));
+            CategoryWidth = 254;
+            CategoryHeight = 146;
+            FontSize = 20;
+        }
 
         public static Button CreateButton(string label)
         {
@@ -27,23 +39,23 @@ namespace video_tracker_v2
             textBox.Text = label;
             textBox.TextWrapping = TextWrapping.Wrap;
             textBox.HorizontalContentAlignment = HorizontalAlignment.Center;
-            textBox.FontSize = fontSize;
+            textBox.FontSize = FontSize;
             textBox.Focusable = false;
             textBox.Background = Brushes.Transparent;
-            textBox.BorderThickness = borderThickness;
+            textBox.BorderThickness = BorderThickness;
             textBox.Cursor = Cursors.Arrow;
-            textBox.Foreground = textBoxBrush;
+            textBox.Foreground = TextBoxBrush;
 
             Button btn = new Button();
 
-            btn.Width = categoryWidth;
-            btn.Height = categoryHeight;
-            btn.Background = categoryNormalBrush;
+            btn.Width = CategoryWidth;
+            btn.Height = CategoryHeight;
+            btn.Background = CategoryNormalBrush;
             btn.VerticalContentAlignment = VerticalAlignment.Center;
             btn.HorizontalAlignment = HorizontalAlignment.Center;
-            btn.BorderBrush = borderBrush;
+            btn.BorderBrush = BorderBrush;
             btn.Content = textBox;
-            btn.Margin = margin;
+            btn.Margin = Margin;
 
             return btn;
         }

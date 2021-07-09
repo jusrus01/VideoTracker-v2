@@ -89,13 +89,13 @@ namespace video_tracker_v2
         {
             if (deleting)
             {
-                btnRemove.Background = UI.buttonNormalBrush;
+                btnRemove.Background = UI.ButtonNormalBrush;
                 deleting = false;
             }
             else
             {
                 deleting = true;
-                btnRemove.Background = UI.buttonActiveBrush;
+                btnRemove.Background = UI.ButtonActiveBrush;
             }
         }
 
