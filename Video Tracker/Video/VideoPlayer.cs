@@ -9,6 +9,26 @@ namespace video_tracker_v2
     /// </summary>
     class VideoPlayer
     {
+        public long Time
+        {
+            get
+            {
+                return mPlayer.Time;
+            }
+        }
+
+        public long VideoDuration
+        {
+            get
+            {
+                if(currentMedia != null)
+                {
+                    return currentMedia.Duration;
+                }
+                return -1;
+            }
+        }
+
         public bool IsPlaying
         {
             get

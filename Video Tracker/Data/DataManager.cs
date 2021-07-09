@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace video_tracker_v2
 {
@@ -19,27 +20,44 @@ namespace video_tracker_v2
         /// Opens file and reads paths to video folders
         /// </summary>
         /// <returns>Array of valid paths to video folders</returns>
-        public static string[] LoadCategories()
+        public static async Task<List<string>> LoadCategoriesAsync()
         {
             if (File.Exists(mainPath))
             {
-                string[] categories = File.ReadAllLines(mainPath);
-                // check if directory with video exists
                 List<string> validCategories = new List<string>();
-                foreach(string category in categories)
+
+                using (StreamReader reader = new StreamReader(mainPath, Encoding.UTF8))
                 {
+                    string category = await reader.ReadLineAsync();
+
                     if(Directory.Exists(category))
                     {
                         validCategories.Add(category);
                     }
                 }
 
-                if (validCategories.Count == 0)
+                if(validCategories.Count == 0)
+                {
                     return null;
+                }
 
-                return validCategories.ToArray<string>();
+                return validCategories;
             }
             return null;
+        }
+
+        private static async Task<List<string>> ReadFileAsync(string path)
+        {
+            List<string> lines = new List<string>();
+
+            string line;
+            using (StreamReader reader = new StreamReader(path))
+            {
+                line = await reader.ReadLineAsync();
+                lines.Add(line);
+            }
+
+            return lines;
         }
         
         /// <summary>
@@ -47,52 +65,49 @@ namespace video_tracker_v2
         /// </summary>
         /// <param name="categoryName">Name of videos folder</param>
         /// <returns>Loaded videos</returns>
-        public static List<Video> LoadVideos(string categoryName)
+        public static async Task<List<Video>> LoadVideosAsync(string categoryName)
         {
             // if file doesn't exists
             // create file
             // and return all videos with data
             List<Video> videos = new List<Video>();
+
             string dataFile = dataPath + '\\' + categoryName;
 
             if (File.Exists(dataFile))
             {
-                string[] lines = File.ReadAllLines(dataFile);
+                List<string> lines = await ReadFileAsync(dataFile);
 
+                string[] values;
                 foreach (string line in lines)
                 {
-                    string[] values = line.Split(';');
+                    values = line.Split(';');
+
                     videos.Add(new Video(values[0], uint.Parse(values[1]),
                         uint.Parse(values[2]), bool.Parse(values[3])));
                 }
             }
             else
             {
-                StringBuilder videoData = new StringBuilder();
-
-                string path = string.Empty;
-                string[] categories = LoadCategories();
-                foreach (string category in categories)
+                List<string> allCategories = await LoadCategoriesAsync();
+                string writtenPath = allCategories.Where(p => Path.GetFileName(p) == categoryName)
+                    .FirstOrDefault();
+                //File.WriteAllText(dataFile, videoData.ToString());
+                using (StreamWriter writer = new StreamWriter(dataFile))
                 {
-                    if (Path.GetFileName(category) == categoryName)
+                    DirectoryInfo dicInfo = new DirectoryInfo(writtenPath);
+                    foreach (FileInfo fi in dicInfo.GetFiles())
                     {
-                        path = category;
-                        break;
+                        // checking if file has a valid extension
+                        if (VideoPlayer.ValidExtensions.Contains(fi.Extension))
+                        {
+                            videos.Add(new Video(fi.FullName, 0, 0, false));
+
+                            await writer.WriteLineAsync(string.Format("{0};{1};{2};{3}",
+                                fi.FullName, "0", "0", "False"));
+                        }
                     }
                 }
-
-                DirectoryInfo dicInfo = new DirectoryInfo(path);
-                foreach(FileInfo fi in dicInfo.GetFiles())
-                {
-                    // checking if file has a valid extension
-                    if(VideoPlayer.ValidExtensions.Contains(fi.Extension))
-                    {
-                        videoData.AppendLine(string.Format("{0};{1};{2};{3}",
-                            fi.FullName, "0", "0", "False"));
-                        videos.Add(new Video(fi.FullName, 0, 0, false));
-                    }
-                }
-                File.WriteAllText(dataFile, videoData.ToString());
             }
             return videos;
         }
@@ -111,49 +126,67 @@ namespace video_tracker_v2
         /// </summary>
         /// <param name="entry">Path to videos directory</param>
         /// <returns>True if exists, false otherwise</returns>
-        public static bool EntryExists(string entry)
+        public static async Task<bool> EntryExistsAsync(string entry)
         {
             if (!File.Exists(mainPath))
                 return false;
 
-            string[] values = File.ReadAllLines(mainPath);
+            var values = await ReadFileAsync(mainPath); 
 
             if (values.Contains(entry))
                 return true;
+
             return false;
         }
 
-        /// <summary>
-        /// Removes path entry from data file and removes
-        /// folder which contains specific videos data
-        /// </summary>
-        /// <param name="path">Path to videos directory</param>
-        public static void RemoveCategoryFromFile(string path)
+        public static async Task<bool> RemoveCategoryFromFileAsync(string categoryPath)
         {
-            // also remove file from data folder if exists
-            string[] lines = File.ReadAllLines(mainPath);
-            int i;
-            string[] values;
-            for (i = 0; i < lines.Length; i++)
+            List<string> allCategories = new List<string>();
+            bool found = false;
+            string category;
+
+            // reconstructing list wihout specified category
+            using (StreamReader reader = new StreamReader(mainPath))
             {
-                values = lines[i].Split(';');
-                if (values[0].Equals(path))
+                category = await reader.ReadLineAsync();
+
+                if (found || category != categoryPath)
                 {
-                    break;
+                    allCategories.Add(category);
+                }
+                else
+                {
+                    found = true;
                 }
             }
 
-            lines = lines.Where(w => w != lines[i]).ToArray();
-
-            File.WriteAllLines(mainPath, lines);
-            string dataFile = dataPath + '\\' + Path.GetFileName(path);
-
-            if (File.Exists(dataFile))
+            if(File.Exists(categoryPath))
             {
-                File.Delete(dataFile);
+                File.Delete(categoryPath);
             }
+
+            return await WriteToFileAsync(allCategories, mainPath);
         }
 
+        private static async Task<bool> WriteToFileAsync(List<string> lines, string path)
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(path))
+                {
+                    foreach (string line in lines)
+                    {
+                        await writer.WriteLineAsync(line);
+                    }
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+       
         /// <summary>
         /// Creates videos data folder, if it doesn't exist
         /// </summary>
@@ -165,11 +198,12 @@ namespace video_tracker_v2
             // check if it already exists
             if(!Directory.Exists(dataPath))
             {
-                Directory.CreateDirectory(dataPath);
+                DirectoryInfo di = Directory.CreateDirectory(dataPath);
+                di.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
             }
         }
         
-        public static void UpdateVideosData(string categoryName, List<Video> videos)
+        public static async void UpdateVideosDataAsync(string categoryName, List<Video> videos)
         {
             if (videos == null)
                 return;
@@ -179,7 +213,7 @@ namespace video_tracker_v2
             {
                 foreach(Video v in videos)
                 {
-                    writer.WriteLine(v.ToString());
+                    await writer.WriteLineAsync(v.ToString());
                 }
             }
         }

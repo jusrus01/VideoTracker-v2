@@ -42,7 +42,7 @@ namespace video_tracker_v2
             currentCategoryPath = path;
             categoryName = System.IO.Path.GetFileName(path);
 
-            videos = DataManager.LoadVideos(categoryName);
+            //videos = DataManager.LoadVideos(categoryName);
 
             mainWindow = Application.Current.MainWindow;
             Application.Current.Exit += SaveVideoData;
@@ -93,7 +93,7 @@ namespace video_tracker_v2
             if (player.currentVideo != null)
             {
                 // save everything on exit
-                DataManager.UpdateVideosData(categoryName, videos);
+                DataManager.UpdateVideosDataAsync(categoryName, videos);
             }
         }
 
@@ -141,13 +141,14 @@ namespace video_tracker_v2
             }
         }
 
-        private void VideoView_Loaded(object sender, RoutedEventArgs e)
+        private async void VideoView_Loaded(object sender, RoutedEventArgs e)
         {
             player = new VideoPlayer();
             player.AddCallbackOnTimeChanged(Update);
 
             videoView.MediaPlayer = player.GetMediaPlayer();
 
+            videos = await DataManager.LoadVideosAsync(categoryName);
             // making sure user can't
             // start playing video until video view is loaded
             CreateVideoListings();
@@ -159,7 +160,7 @@ namespace video_tracker_v2
             player.Dispose();
             mainWindow.Title = "Video Tracker - Home";
 
-            DataManager.UpdateVideosData(categoryName, videos);
+            DataManager.UpdateVideosDataAsync(categoryName, videos);
 
             NavigationService.GoBack();
         }
@@ -168,10 +169,10 @@ namespace video_tracker_v2
         {
             sliderTimeline.Dispatcher.InvokeAsync(() =>
             {
-                if (sliderTimeline.Maximum != Convert.ToDouble(player.currentMedia.Duration / 60))
+                if (sliderTimeline.Maximum != Convert.ToDouble(player.VideoDuration / 60))
                 {
-                    sliderTimeline.Maximum = Convert.ToDouble(player.currentMedia.Duration / 60);
-                    player.currentVideo.Duration = Convert.ToUInt32(player.currentMedia.Duration / 60);
+                    sliderTimeline.Maximum = Convert.ToDouble(player.VideoDuration / 60);
+                    player.currentVideo.Duration = Convert.ToUInt32(player.VideoDuration / 60);
                     // making sure volume slider is on some kind of value
                     sliderVolume.Value = 50; // default
                 }
@@ -300,7 +301,7 @@ namespace video_tracker_v2
         {
             // check if it's really a mouse click
             Slider s = sender as Slider;
-            if (Convert.ToDouble(player.mPlayer.Time / 60) != s.Value)
+            if (Convert.ToDouble(player.Time / 60) != s.Value)
             {
                 player.SetTime(s.Value);
             }

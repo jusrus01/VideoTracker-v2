@@ -31,9 +31,9 @@ namespace video_tracker_v2
         /// Create buttons for each path saved in
         /// data file
         /// </summary>
-        private void CreateCategories()
+        private async void CreateCategories()
         {
-            string[] categories = DataManager.LoadCategories();
+            var categories = await DataManager.LoadCategoriesAsync();
 
             if (categories == null)
                 return;
@@ -64,14 +64,15 @@ namespace video_tracker_v2
         /// </summary>
         /// <param name="sender">Sender</param>
         /// <param name="e">Event data</param>
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             bool isDeleting = (bool)btnRemove.DataContext;
             if (isDeleting)
             {
                 // delete button and remove from file
                 Button btn = (sender as Button);
-                DataManager.RemoveCategoryFromFile(btn.DataContext.ToString());
+                //DataManager.RemoveCategoryFromFile(btn.DataContext.ToString());
+                await DataManager.RemoveCategoryFromFileAsync(btn.DataContext.ToString());
                 panelCategories.Children.Remove(btn);
                 ToogleRemove(null, null);
             }
@@ -108,7 +109,7 @@ namespace video_tracker_v2
         /// </summary>
         /// <param name="sender">Sender</param>
         /// <param name="e">Event data</param>
-        private void AddCategory(object sender, RoutedEventArgs e)
+        private async void AddCategory(object sender, RoutedEventArgs e)
         {
             if((bool)btnRemove.DataContext)
                 ToogleRemove(null, null);
@@ -119,7 +120,9 @@ namespace video_tracker_v2
             if (openDialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 // check to see if it already exists
-                if (!DataManager.EntryExists(openDialog.FileName))
+                bool exists = await DataManager.EntryExistsAsync(openDialog.FileName);
+
+                if (!exists)
                 {
                     AddButton(openDialog.FileName);
                     DataManager.SaveCategory(openDialog.FileName);
