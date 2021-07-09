@@ -11,13 +11,12 @@ namespace video_tracker_v2
     /// </summary>
     public partial class HomePage : Page
     {
-        private string[] categories;
-        private bool deleting = false;
-
-
         public HomePage()
         {
             InitializeComponent();
+
+            // add false flag to remove button
+            btnRemove.DataContext = false;
 
             DataManager.MainPath = "categories.data";
             DataManager.CreateDataFolder();
@@ -31,7 +30,7 @@ namespace video_tracker_v2
         /// </summary>
         private void CreateCategories()
         {
-            categories = DataManager.LoadCategories();
+            string[] categories = DataManager.LoadCategories();
 
             if (categories == null)
                 return;
@@ -64,7 +63,8 @@ namespace video_tracker_v2
         /// <param name="e">Event data</param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (deleting)
+            bool isDeleting = (bool)btnRemove.DataContext;
+            if (isDeleting)
             {
                 // delete button and remove from file
                 Button btn = (sender as Button);
@@ -87,15 +87,25 @@ namespace video_tracker_v2
         /// <param name="e">Event data</param>
         private void ToogleRemove(object sender, RoutedEventArgs e)
         {
-            if (deleting)
+            //if (deleting)
+            //{
+            //    btnRemove.Background = UI.ButtonNormalBrush;
+            //    deleting = false;
+            //}
+            //else
+            //{
+            //    deleting = true;
+            //    btnRemove.Background = UI.ButtonActiveBrush;
+            //}
+            if((bool)btnRemove.DataContext)
             {
                 btnRemove.Background = UI.ButtonNormalBrush;
-                deleting = false;
+                btnRemove.DataContext = false;
             }
             else
             {
-                deleting = true;
                 btnRemove.Background = UI.ButtonActiveBrush;
+                btnRemove.DataContext = true;
             }
         }
 
@@ -107,7 +117,7 @@ namespace video_tracker_v2
         /// <param name="e">Event data</param>
         private void AddCategory(object sender, RoutedEventArgs e)
         {
-            if(deleting)
+            if((bool)btnRemove.DataContext)
                 ToogleRemove(null, null);
 
             CommonOpenFileDialog openDialog = new CommonOpenFileDialog();
