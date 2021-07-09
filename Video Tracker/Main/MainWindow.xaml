@@ -8,7 +8,7 @@
         Title="Video Tracker - Home" Height="600.529" Width="1033"
         ResizeMode="CanResize"
         Background="#252422"
-        Source="../HomePage/HomePage.xaml"
+        Source="../Home/HomePage.xaml"
         MinWidth="640" MinHeight="480"
         Icon="../Resources/sample_icon.ico"
         >
