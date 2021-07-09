@@ -1,5 +1,6 @@
 ﻿using System;
 using LibVLCSharp.Shared;
+using LibVLCSharp.Shared.Structures;
 
 namespace video_tracker_v2
 {
@@ -8,6 +9,34 @@ namespace video_tracker_v2
     /// </summary>
     class VideoPlayer
     {
+        public bool IsPlaying
+        {
+            get
+            {
+                if(currentMedia != null)
+                {
+                    return mPlayer.IsPlaying;
+                }
+                return false;
+            }
+        }
+
+        public bool MediaLoaded
+        {
+            get
+            {
+                return currentMedia != null;
+            }
+        }
+
+        public TrackDescription[] SpuDescription
+        {
+            get
+            {
+                return mPlayer.SpuDescription;
+            }
+        }
+
         // not sure if some of them are video files
         public readonly static string ValidExtensions = ".asx " +
             ".gxf" +
@@ -56,9 +85,11 @@ namespace video_tracker_v2
             ".wma" +
             ".mp4";
 
-        public MediaPlayer mPlayer { get; set; }
         public Video currentVideo { get; set; }
-        public Media currentMedia { get; set; }
+
+        private MediaPlayer mPlayer;
+        private Media currentMedia;
+
 
         private LibVLC _libVLC;
 
@@ -134,9 +165,34 @@ namespace video_tracker_v2
             }
         }
 
+        public MediaPlayer GetMediaPlayer()
+        {
+            return mPlayer;
+        }
+
         public void AddSub(string path)
         {
             mPlayer.AddSlave(MediaSlaveType.Subtitle, "file:///" + path, true);
+        }
+
+        public void AddCallbackOnTimeChanged(EventHandler<MediaPlayerTimeChangedEventArgs> func)
+        {
+            mPlayer.TimeChanged += func;
+        }
+
+        public void AddCallbackOnMediaPlaying(EventHandler<EventArgs> func)
+        {
+            mPlayer.Playing += func;
+        }
+
+        public void RemoveCallbackOnMediaPlaying(EventHandler<EventArgs> func)
+        {
+            mPlayer.Playing -= func;
+        }
+
+        public void SetSpu(int spu)
+        {
+            mPlayer.SetSpu(spu);
         }
     }
 }

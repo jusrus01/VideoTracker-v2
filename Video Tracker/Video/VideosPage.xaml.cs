@@ -19,6 +19,8 @@ namespace video_tracker_v2
     /// </summary>
     public partial class VideosPage : Page
     {
+        public delegate void UpdateVideoPage();
+
         private string categoryName;
         private string currentCategoryPath;
 
@@ -36,6 +38,7 @@ namespace video_tracker_v2
         public VideosPage(string path)
         {
             InitializeComponent();
+
             currentCategoryPath = path;
             categoryName = System.IO.Path.GetFileName(path);
 
@@ -114,14 +117,15 @@ namespace video_tracker_v2
 
             if (!player.currentVideo.Complete)
                 curPressedButton.Background = UI.ActiveVideoBrush;
-            player.mPlayer.Playing += LoadSubtitles;
+            //player.mPlayer.Playing += LoadSubtitles;
+            player.AddCallbackOnMediaPlaying(LoadSubtitles);
 
             curProgressBar = (ProgressBar)VisualTreeHelper.GetChild(videoPanel, int.Parse(curPressedButton.DataContext.ToString()) * 2 + 1);
         }
 
         private void Move(object sender, RoutedEventArgs e)
         {
-            if (player.currentMedia == null || !player.mPlayer.IsPlaying)
+            if (!player.IsPlaying)
                 return;
 
             int value = int.Parse((sender as Button).Tag.ToString());
@@ -140,8 +144,9 @@ namespace video_tracker_v2
         private void VideoView_Loaded(object sender, RoutedEventArgs e)
         {
             player = new VideoPlayer();
-            videoView.MediaPlayer = player.mPlayer;
-            player.mPlayer.TimeChanged += Update;
+            player.AddCallbackOnTimeChanged(Update);
+
+            videoView.MediaPlayer = player.GetMediaPlayer();
 
             // making sure user can't
             // start playing video until video view is loaded
@@ -279,7 +284,7 @@ namespace video_tracker_v2
 
         private void PlayVideo(object sender, RoutedEventArgs e)
         {
-            if(player.mPlayer.IsPlaying)
+            if(player.IsPlaying)
             {
                 player.Pause();
                 btnPlay.Background = UI.PlayImageBrush;
@@ -355,7 +360,7 @@ namespace video_tracker_v2
         private void SelectSubtitleItem(object sender, RoutedEventArgs e)
         {
             MenuItem test = sender as MenuItem;
-            player.mPlayer.SetSpu(int.Parse(test.DataContext.ToString()));
+            player.SetSpu(int.Parse(test.DataContext.ToString()));
         }
 
         private void LoadSubtitles(object sender, EventArgs e)
@@ -369,7 +374,7 @@ namespace video_tracker_v2
                 addSub.Click += AddExternalSubFile;
                 videoViewContextMenu.Items.Add(addSub);
 
-                foreach(TrackDescription t in player.mPlayer.SpuDescription)
+                foreach(TrackDescription t in player.SpuDescription)
                 {
                     MenuItem sub = new MenuItem();
                     sub.Header = t.Name;
@@ -378,12 +383,13 @@ namespace video_tracker_v2
                     videoViewContextMenu.Items.Add(sub);
                 }
             });
-            player.mPlayer.Playing -= LoadSubtitles;
+
+            player.RemoveCallbackOnMediaPlaying(LoadSubtitles);
         }
 
         private void AddExternalSubFile(object sender, EventArgs e)
         {
-            if(player.currentMedia != null)
+            if(player.MediaLoaded)
             {
                 player.Pause();
 
