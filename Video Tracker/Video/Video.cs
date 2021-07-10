@@ -10,7 +10,7 @@
 
         public string Path { get; set; }
 
-        public uint CurrentTime
+        public long CurrentTime
         {
             get { return currentTime; }
 
@@ -33,11 +33,11 @@
             }
         }
 
-        public uint Duration { get; set; }
+        public long Duration { get; set; }
         public bool Complete { get; set; }
 
-        private uint currentTime;
-        private uint videoEndedAt;
+        private long currentTime;
+        private long videoEndedAt;
 
         /// <summary>
         /// Constructor
@@ -46,7 +46,7 @@
         /// <param name="curTime">Time in seconds</param>
         /// <param name="duration">Duration in seconds</param>
         /// <param name="complete">Video state</param>
-        public Video(string path, uint curTime, uint duration, bool complete)
+        public Video(string path, long curTime, long duration, bool complete)
         {
             Path = path;
             CurrentTime = curTime;

@@ -109,8 +109,6 @@ namespace video_tracker_v2
 
         private MediaPlayer mPlayer;
         private Media currentMedia;
-
-
         private LibVLC _libVLC;
 
         public VideoPlayer()
@@ -141,13 +139,17 @@ namespace video_tracker_v2
             mPlayer.Play();
         }
 
-        public void SetTime(double time)
+        public void SetTime(long time)
         {
             if (currentMedia != null)
             {
-                long t = ((long)time) * 60;
-                mPlayer.Time = t;
-                currentVideo.CurrentTime = Convert.ToUInt32(time);
+                if (currentMedia.State == VLCState.Ended)
+                {
+                    Play(currentVideo);
+                }
+
+                mPlayer.Time = time;
+                //currentVideo.CurrentTime = Convert.ToUInt32(time);
             }
         }
 

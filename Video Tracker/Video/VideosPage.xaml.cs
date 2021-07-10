@@ -117,7 +117,7 @@ namespace video_tracker_v2
 
             if (!player.currentVideo.Complete)
                 curPressedButton.Background = UI.ActiveVideoBrush;
-            //player.mPlayer.Playing += LoadSubtitles;
+
             player.AddCallbackOnMediaPlaying(LoadSubtitles);
 
             curProgressBar = (ProgressBar)VisualTreeHelper.GetChild(videoPanel, int.Parse(curPressedButton.DataContext.ToString()) * 2 + 1);
@@ -152,6 +152,7 @@ namespace video_tracker_v2
             // making sure user can't
             // start playing video until video view is loaded
             CreateVideoListings();
+            
         }
 
         private void GoToHomePage(object sender, RoutedEventArgs e)
@@ -167,26 +168,47 @@ namespace video_tracker_v2
 
         private void Update(object sender, MediaPlayerTimeChangedEventArgs e)
         {
-            sliderTimeline.Dispatcher.InvokeAsync(() =>
+            Dispatcher.InvokeAsync(() =>
             {
-                if (sliderTimeline.Maximum != Convert.ToDouble(player.VideoDuration / 60))
-                {
-                    sliderTimeline.Maximum = Convert.ToDouble(player.VideoDuration / 60);
-                    player.currentVideo.Duration = Convert.ToUInt32(player.VideoDuration / 60);
-                    // making sure volume slider is on some kind of value
-                    sliderVolume.Value = 50; // default
-                }
+                double watchedTime = Math.Round(player.Time * sliderTimeline.Maximum / player.VideoDuration);
 
-                sliderTimeline.Value = Convert.ToDouble(e.Time / 60);
-
-                if (curProgressBar.Maximum == 100)
-                    curProgressBar.Maximum = player.currentVideo.Duration;
-
-                curProgressBar.Value = Convert.ToDouble(e.Time / 60);
-
-                // updating video file too
-                player.currentVideo.CurrentTime = Convert.ToUInt32(e.Time / 60);
+                sliderTimeline.Value = watchedTime;
+                curProgressBar.Value = watchedTime;
             });
+
+            // async change of colors
+            // async change of decorative progress bar
+
+            // real time change of slider
+
+            //sliderTimeline.Dispatcher.InvokeAsync(() =>
+            //{
+            //    // maximum - 100
+            //    // x - y
+            //    sliderTimeline.Value = Math.Round(e.Time * sliderTimeline.Maximum / player.VideoDuration);
+
+            //});
+
+            //sliderTimeline.Dispatcher.InvokeAsync(() =>
+            //{
+            //    if (sliderTimeline.Maximum != Convert.ToDouble(player.VideoDuration))
+            //    {
+            //        sliderTimeline.Maximum = Convert.ToDouble(player.VideoDuration);
+            //        player.currentVideo.Duration = player.VideoDuration;
+            //        // making sure volume slider is on some kind of value
+            //        sliderVolume.Value = 50; // default
+            //    }
+
+            //    sliderTimeline.Value = e.Time;
+
+            //    if (curProgressBar.Maximum == 100)
+            //        curProgressBar.Maximum = player.currentVideo.Duration;
+
+            //    curProgressBar.Value = e.Time;
+
+            //    // updating video file too
+            //    player.currentVideo.CurrentTime = e.Time;
+            //});
         }
 
         private void UpdateVideoVolume(object sender, RoutedEventArgs e)
@@ -252,6 +274,12 @@ namespace video_tracker_v2
             }
         }
 
+
+        private void SliderPositionChange(object sender, MouseButtonEventArgs e)
+        {
+            player.SetTime((long)sliderTimeline.Value * player.VideoDuration / (long)sliderTimeline.Maximum);
+        }
+
         private void EnterFullscreenMode()
         {
             player.Pause();
@@ -300,11 +328,11 @@ namespace video_tracker_v2
         private void SetVideoToTime(object sender, RoutedEventArgs e)
         {
             // check if it's really a mouse click
-            Slider s = sender as Slider;
-            if (Convert.ToDouble(player.Time / 60) != s.Value)
-            {
-                player.SetTime(s.Value);
-            }
+            //Slider s = sender as Slider;
+            //if (Convert.ToDouble(player.Time) != s.Value)
+            //{
+            //    player.SetTime((long)s.Value);
+            //}
         }
 
         private void HandleKeyUp(object sender, KeyEventArgs e)

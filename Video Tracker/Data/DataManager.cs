@@ -16,6 +16,8 @@ namespace video_tracker_v2
         private static string mainPath { get; set; }  // this holds created categories
         private static string dataPath { get; set; }  // this holds specific video category data
 
+        // DOENST WRITE CORRECTLY
+
         /// <summary>
         /// Opens file and reads paths to video folders
         /// </summary>
@@ -53,8 +55,10 @@ namespace video_tracker_v2
             string line;
             using (StreamReader reader = new StreamReader(path))
             {
-                line = await reader.ReadLineAsync();
-                lines.Add(line);
+                while((line = await reader.ReadLineAsync()) != null)
+                {
+                    lines.Add(line);
+                }
             }
 
             return lines;
@@ -73,6 +77,9 @@ namespace video_tracker_v2
             List<Video> videos = new List<Video>();
 
             string dataFile = dataPath + '\\' + categoryName;
+            List<string> allCategories = await LoadCategoriesAsync();
+            string writtenPath = allCategories.Where(p => Path.GetFileName(p) == categoryName)
+                .FirstOrDefault();
 
             if (File.Exists(dataFile))
             {
@@ -86,12 +93,10 @@ namespace video_tracker_v2
                     videos.Add(new Video(values[0], uint.Parse(values[1]),
                         uint.Parse(values[2]), bool.Parse(values[3])));
                 }
+                await WriteToFileAsync(lines, writtenPath);
             }
             else
             {
-                List<string> allCategories = await LoadCategoriesAsync();
-                string writtenPath = allCategories.Where(p => Path.GetFileName(p) == categoryName)
-                    .FirstOrDefault();
                 //File.WriteAllText(dataFile, videoData.ToString());
                 using (StreamWriter writer = new StreamWriter(dataFile))
                 {
