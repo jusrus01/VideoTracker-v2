@@ -30,11 +30,14 @@ namespace video_tracker_v2
 
                 using (StreamReader reader = new StreamReader(mainPath, Encoding.UTF8))
                 {
-                    string category = await reader.ReadLineAsync();
-
-                    if(Directory.Exists(category))
+                    string category;
+                    
+                    while((category = await reader.ReadLineAsync()) != null)
                     {
-                        validCategories.Add(category);
+                        if (Directory.Exists(category))
+                        {
+                            validCategories.Add(category);
+                        }
                     }
                 }
 
