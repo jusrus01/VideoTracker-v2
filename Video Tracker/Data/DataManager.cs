@@ -150,27 +150,23 @@ namespace video_tracker_v2
         public static async Task<bool> RemoveCategoryFromFileAsync(string categoryPath)
         {
             List<string> allCategories = new List<string>();
-            bool found = false;
-            string category;
 
+            string category;
             // reconstructing list wihout specified category
             using (StreamReader reader = new StreamReader(mainPath))
             {
                 category = await reader.ReadLineAsync();
 
-                if (found || category != categoryPath)
+                if (category != categoryPath)
                 {
                     allCategories.Add(category);
                 }
-                else
-                {
-                    found = true;
-                }
             }
 
-            if(File.Exists(categoryPath))
+            string _dataPath = $"{dataPath}//{Path.GetFileName(category)}";
+            if(File.Exists(_dataPath))
             {
-                File.Delete(categoryPath);
+                File.Delete(_dataPath);
             }
 
             return await WriteToFileAsync(allCategories, mainPath);

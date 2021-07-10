@@ -58,52 +58,7 @@ namespace video_tracker_v2
         }
 
         // not sure if some of them are video files
-        public readonly static string ValidExtensions = ".asx " +
-            ".gxf" +
-            ".m2v" +
-            ".m3u" +
-            ".m4v" +
-            ".mpeg1" +
-            ".mpeg2" +
-            ".mts" +
-            ".mxf" +
-            ".ogm" +
-            ".pls" +
-            ".bup" +
-            ".a52" +
-            ".acc" +
-            ".b4s" +
-            ".divx" +
-            ".dv" +
-            ".flv" +
-            ".m1v" +
-            ".m2ts" +
-            ".mkv" +
-            ".mov" +
-            ".mpeg4" +
-            ".oma" +
-            ".spx" +
-            ".ts" +
-            ".vlc" +
-            ".vob" +
-            ".xspf" +
-            ".dat" +
-            ".ifo" +
-            ".part" +
-            ".3g2" +
-            ".avi" +
-            ".mpeg" +
-            ".mpg" +
-            ".flac" +
-            ".m4a" +
-            ".mp1" +
-            ".ogg" +
-            ".wav" +
-            ".xm" +
-            ".3gp" +
-            ".wmv" +
-            ".wma" +
-            ".mp4";
+        public readonly static string ValidExtensions = ".mp4.wmv.avi";
 
         public Video currentVideo { get; set; }
 
@@ -116,8 +71,8 @@ namespace video_tracker_v2
             Core.Initialize();
 
             _libVLC = new LibVLC();
-            mPlayer = new MediaPlayer(_libVLC);
 
+            mPlayer = new MediaPlayer(_libVLC);
             mPlayer.EnableMouseInput = false;
         }
 
@@ -149,7 +104,6 @@ namespace video_tracker_v2
                 }
 
                 mPlayer.Time = time;
-                //currentVideo.CurrentTime = Convert.ToUInt32(time);
             }
         }
 
@@ -174,13 +128,13 @@ namespace video_tracker_v2
             // sometimes crashes, even though media is loaded
             try
             {
-                    if (msTime < 0 && mPlayer.Time - msTime < 0 && mPlayer.Media != null)
-                    {
-                        mPlayer.Time = 0;
-                        return;
-                    }
+                if (msTime < 0 && mPlayer.Time - msTime < 0 && mPlayer.Media != null)
+                {
+                    mPlayer.Time = 0;
+                    return;
+                }
 
-                    mPlayer.Time += msTime;
+                mPlayer.Time += msTime;
             }
             catch
             {

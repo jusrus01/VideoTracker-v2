@@ -42,7 +42,8 @@ namespace video_tracker_v2
             categoryName = Path.GetFileName(path);
 
             mainWindow = Application.Current.MainWindow;
-            Application.Current.Exit += SaveVideoData;
+            mainWindow.Closing += SaveVideoData;
+
             mainWindow.Title = "Video Tracker - " + categoryName;
 
             videoView.Loaded += VideoView_Loaded;
@@ -87,6 +88,11 @@ namespace video_tracker_v2
 
         private void InsertToVideoList(Video video)
         {
+            if(video == null)
+            {
+                return;
+            }
+
             video.CurrentTime = player.Time;
             video.Duration = player.VideoDuration;
 
@@ -103,13 +109,20 @@ namespace video_tracker_v2
             }
         }
 
+        private void SaveVideoData(object sender, EventArgs e)
+        {
+            Save();
+        }
+
         private void SaveVideoData(object sender, ExitEventArgs e)
+        {
+            Save();
+        }
+
+        private void Save()
         {
             if (player.currentVideo != null)
             {
-                //// save everything on exit
-                //player.currentVideo.CurrentTime = player.Time;
-                //player.currentVideo.Duration = player.VideoDuration;
                 InsertToVideoList(player.currentVideo);
                 DataManager.UpdateVideosDataAsync(categoryName, videos);
             }
@@ -119,8 +132,8 @@ namespace video_tracker_v2
         {
             if(player.currentVideo != null)
             {
-                player.currentVideo.Completed -= OnVideoComplete;
                 InsertToVideoList(player.currentVideo);
+                player.currentVideo.Completed -= OnVideoComplete;
             }
 
             if (curPressedButton != null && !player.currentVideo.Complete)
@@ -168,6 +181,7 @@ namespace video_tracker_v2
             videoView.MediaPlayer = player.GetMediaPlayer();
 
             videos = await DataManager.LoadVideosAsync(categoryName);
+
             // making sure user can't
             // start playing video until video view is loaded
             CreateVideoListings();
@@ -195,40 +209,6 @@ namespace video_tracker_v2
                 sliderTimeline.Value = watchedTime;
                 curProgressBar.Value = watchedTime;
             });
-
-            // async change of colors
-            // async change of decorative progress bar
-
-            // real time change of slider
-
-            //sliderTimeline.Dispatcher.InvokeAsync(() =>
-            //{
-            //    // maximum - 100
-            //    // x - y
-            //    sliderTimeline.Value = Math.Round(e.Time * sliderTimeline.Maximum / player.VideoDuration);
-
-            //});
-
-            //sliderTimeline.Dispatcher.InvokeAsync(() =>
-            //{
-            //    if (sliderTimeline.Maximum != Convert.ToDouble(player.VideoDuration))
-            //    {
-            //        sliderTimeline.Maximum = Convert.ToDouble(player.VideoDuration);
-            //        player.currentVideo.Duration = player.VideoDuration;
-            //        // making sure volume slider is on some kind of value
-            //        sliderVolume.Value = 50; // default
-            //    }
-
-            //    sliderTimeline.Value = e.Time;
-
-            //    if (curProgressBar.Maximum == 100)
-            //        curProgressBar.Maximum = player.currentVideo.Duration;
-
-            //    curProgressBar.Value = e.Time;
-
-            //    // updating video file too
-            //    player.currentVideo.CurrentTime = e.Time;
-            //});
         }
 
         private void UpdateVideoVolume(object sender, RoutedEventArgs e)
@@ -343,16 +323,6 @@ namespace video_tracker_v2
                 player.Play();
                 btnPlay.Background = UI.PauseImageBrush;
             }
-        }
-
-        private void SetVideoToTime(object sender, RoutedEventArgs e)
-        {
-            // check if it's really a mouse click
-            //Slider s = sender as Slider;
-            //if (Convert.ToDouble(player.Time) != s.Value)
-            //{
-            //    player.SetTime((long)s.Value);
-            //}
         }
 
         private void HandleKeyUp(object sender, KeyEventArgs e)
