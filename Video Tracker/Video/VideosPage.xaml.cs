@@ -11,6 +11,7 @@ using System.Timers;
 using LibVLCSharp.Shared.Structures;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace video_tracker_v2
 {
@@ -19,8 +20,6 @@ namespace video_tracker_v2
     /// </summary>
     public partial class VideosPage : Page
     {
-        public delegate void UpdateVideoPage();
-
         private string categoryName;
         private string currentCategoryPath;
 
@@ -40,9 +39,7 @@ namespace video_tracker_v2
             InitializeComponent();
 
             currentCategoryPath = path;
-            categoryName = System.IO.Path.GetFileName(path);
-
-            //videos = DataManager.LoadVideos(categoryName);
+            categoryName = Path.GetFileName(path);
 
             mainWindow = Application.Current.MainWindow;
             Application.Current.Exit += SaveVideoData;
@@ -88,11 +85,32 @@ namespace video_tracker_v2
             videoPanel.Children.Add(bar);
         }
 
+        private void InsertToVideoList(Video video)
+        {
+            video.CurrentTime = player.Time;
+            video.Duration = player.VideoDuration;
+
+            if(videos != null && video != null)
+            {
+                for(int i = 0; i < videos.Count; i++)
+                {
+                    if(videos[i].Equals(video))
+                    {
+                        videos[i] = video;
+                        return;
+                    }
+                }
+            }
+        }
+
         private void SaveVideoData(object sender, ExitEventArgs e)
         {
             if (player.currentVideo != null)
             {
-                // save everything on exit
+                //// save everything on exit
+                //player.currentVideo.CurrentTime = player.Time;
+                //player.currentVideo.Duration = player.VideoDuration;
+                InsertToVideoList(player.currentVideo);
                 DataManager.UpdateVideosDataAsync(categoryName, videos);
             }
         }
@@ -102,6 +120,7 @@ namespace video_tracker_v2
             if(player.currentVideo != null)
             {
                 player.currentVideo.Completed -= OnVideoComplete;
+                InsertToVideoList(player.currentVideo);
             }
 
             if (curPressedButton != null && !player.currentVideo.Complete)
@@ -157,11 +176,12 @@ namespace video_tracker_v2
 
         private void GoToHomePage(object sender, RoutedEventArgs e)
         {
+            InsertToVideoList(player.currentVideo);
+            DataManager.UpdateVideosDataAsync(categoryName, videos);
+
             player.Pause();
             player.Dispose();
             mainWindow.Title = "Video Tracker - Home";
-
-            DataManager.UpdateVideosDataAsync(categoryName, videos);
 
             NavigationService.GoBack();
         }

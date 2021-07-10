@@ -123,13 +123,17 @@ namespace video_tracker_v2
 
             ProgressBar bar = new ProgressBar();
             bar.Height = 20;
+            bar.Maximum = 100;
 
-            if (video.Duration == 0)
-                bar.Maximum = 100;
+            if(video.CurrentTime == 0 || video.Duration == 0)
+            {
+                bar.Value = 0;
+            }
             else
-                bar.Maximum = video.Duration;
+            {
+                bar.Value = video.CurrentTime * bar.Maximum / video.Duration;
+            }
 
-            bar.Value = video.CurrentTime;
             bar.BorderThickness = BorderNone;
             bar.DataContext = id.ToString();
             bar.HorizontalContentAlignment = HorizontalAlignment.Stretch;
